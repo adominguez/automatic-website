@@ -1,0 +1,23 @@
+.ql-editor h1 {
+  @apply text-3xl font-bold;
+}
+
+.ql-editor h2 {
+  @apply text-2xl font-semibold;
+}
+
+.ql-editor h3 {
+  @apply text-xl font-semibold;
+}
+
+.ql-editor p {
+  @apply my-4 text-base;
+}
+
+.ql-editor ul {
+  @apply my-4 text-base;
+}
+
+.ql-editor table {
+  @apply my-4 text-base;
+}
