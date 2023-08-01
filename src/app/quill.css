@@ -21,3 +21,21 @@
 .ql-editor table {
   @apply my-4 text-base;
 }
+
+.placeholder:empty:before {
+  content: attr(aria-label);
+}
+
+.default-field {
+  outline: none;
+}
+
+
+
+.placeholder {
+  @apply transition-all border-b border-b-transparent;
+}
+
+.placeholder:focus {
+  @apply border-b-blue-gray-700;
+}

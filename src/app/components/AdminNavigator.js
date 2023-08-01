@@ -14,8 +14,8 @@ const Navigator = ({ }) => {
   const [opened, setOpened] = useState(false);
 
   const callback = useCallback((e) => {
-    const isMenuSelected = e.target.parentElement.classList.contains('menu-button') || e.target.classList.contains('menu-button');
-    const isBackdrop = e.target.classList.contains('backdrop')
+    const isMenuSelected = e.target?.parentElement?.classList.contains('menu-button') || e.target?.classList?.contains('menu-button');
+    const isBackdrop = e.target?.classList?.contains('backdrop')
     const isLink = e.target instanceof HTMLAnchorElement
     if (isBackdrop || isMenuSelected) setOpened(!opened);
     isLink && setOpened(false);

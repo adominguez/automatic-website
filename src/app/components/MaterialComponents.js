@@ -18,6 +18,9 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Popover,
+  PopoverHandler,
+  PopoverContent,
 } from "@material-tailwind/react";
 
 export { Button,
@@ -38,4 +41,7 @@ export { Button,
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Popover,
+  PopoverHandler,
+  PopoverContent,
 };
