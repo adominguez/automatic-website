@@ -1,10 +1,21 @@
-import { Bookmark, Content, List } from '@/app/components/Icons'
+import { Bookmark, Content, List, Bold, Italic, Underline } from '@/app/components/Icons'
 import { v4 as uuidv4 } from 'uuid';
 
 export const INITIAL_BLOCKS = [
-  { tag: 'h1', id: uuidv4(), value: '' },
-  { tag: 'p', id: uuidv4(), value: '' },
+  { tag: 'h1', id: uuidv4(), value: '', order: 0 },
+  { tag: 'p', id: uuidv4(), value: '', order: 1 },
 ];
+
+export const TYPE_BY_TAG = {
+  h1: 'heading',
+  h2: 'heading',
+  h3: 'heading',
+  h4: 'heading',
+  h5: 'heading',
+  h6: 'heading',
+  p: 'content',
+  span: 'content'
+}
 
 export const TYPES_OF_CONTENT = {
   heading: {
@@ -17,12 +28,37 @@ export const TYPES_OF_CONTENT = {
       { label: 'h5', tag: 'h5' },
       { label: 'h6', tag: 'h6' },
     ],
+    editingButtons: [{
+      icon: <Bookmark />,
+      type: 'convert'
+    }, {
+      icon: <Bold />,
+      type: 'bold'
+    }],
     initialSelected: { label: 'h2', tag: 'h2', value: '' },
     icon: <Bookmark />,
   },
   content: {
     label: 'Contenido',
     initialSelected: { label: 'párrafo', tag: 'p', value: '' },
+    editingButtons: [{
+      icon: <Content />,
+      type: 'convert'
+    }, {
+      icon: <Bold />,
+      type: 'transform',
+      tagName: 'b'
+    },
+    {
+      icon: <Italic />,
+      type: 'transform',
+      tagName: 'i'
+    },
+    {
+      icon: <Underline />,
+      type: 'transform',
+      tagName: 'u'
+    }],
     types: [
       { label: 'párrafo', tag: 'p' },
       { label: 'span', tag: 'span' },
@@ -31,7 +67,7 @@ export const TYPES_OF_CONTENT = {
   },
   list: {
     label: 'Listado',
-    initialSelected: { label: 'desordenada', tag: 'ul', value: '<ul><li></li></ul>' },
+    initialSelected: { label: 'desordenada', tag: 'ul', value: '<li contenteditable="true"></li>' },
     types: [
       { label: 'desordenada', tag: 'ul' },
       { label: 'ordenada', type: 'ol' }
@@ -53,5 +89,5 @@ export const ariaByTag = {
   h1: 'Escribe un título',
   h2: 'Encabezado',
   p: 'teclea/para elegir un bloque',
-  li: 'Listado'
+  ul: 'Listado'
 }

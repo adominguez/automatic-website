@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { INITIAL_BLOCKS } from '@/app/constants/gutemberg'
 import GutembergPopover from "./GutembergPopover";
 import GutembergContentEditable from "./GutembergContentEditable";
+import GutembergPopoverEditing from "./GutembergPopoverEditing";
+import { transformAction } from '@/app/libs/clipboard.js'
 
 const parsePastedContent = (content, id, block) => {
   const parser = new DOMParser();
@@ -44,9 +46,22 @@ const GutembergEditor = () => {
     setBlocks(INITIAL_BLOCKS)
   }, [])
 
+  const handleclick = (e) => {
+    const currentInput = getRefFromId(e.target.id);
+    if (!currentInput) {
+      setBlocks((oldData) => oldData.map((item) => ({
+        ...item,
+        editing: false
+      })))
+    }
+  }
+
   useEffect(() => {
-    console.log('blocks updated')
-  }, [blocks])
+    window.addEventListener('click', handleclick);
+    return () => {
+      window.removeEventListener('click', handleclick);
+    };
+  }, []);
 
   const focusElement = (id) => {
     setTimeout(() => {
@@ -58,6 +73,8 @@ const GutembergEditor = () => {
   }
 
   const getBlockFromId = (id) => blocks.find(item => item.id === id)
+
+  const getRefFromId = (id) => inputRef.current.find(item => item?.el?.current?.id === id)
 
   const handleContentChange = (evt, id) => {
     const { target } = evt;
@@ -77,12 +94,19 @@ const GutembergEditor = () => {
       if (value) {
         const newId = uuidv4()
         if (tag !== 'h1') {
-          const newBlock = { tag: 'p', editing: false, id: newId };
-          setBlocks(oldData => oldData.reduce((acc, item) => {
+          const newBlock = { tag: 'p', id: newId };
+          setBlocks(oldData => oldData.reduce((acc, item, index) => {
             const isNode = item.id === id;
-            acc.push(item)
+            const order = acc.some(block => block.id === newId) ? index + 1 : index
+            acc.push({
+              ...item,
+              order
+            })
             if (isNode) {
-              acc.push(newBlock)
+              acc.push({
+                ...newBlock,
+                order: index + 1
+              })
             }
             return acc
           }, []))
@@ -93,7 +117,10 @@ const GutembergEditor = () => {
     const hasPosibleLength = blocks?.length > 2 || blocks.some(item => item.value?.length > 0 && item.tag !== 'h1');
     if (event.key === 'Backspace' && event.target.innerHTML.trim() === '' && hasPosibleLength && tag !== 'h1') {
       const currentIndex = blocks.findIndex(item => item.id === id);
-      const blocksToKeep = blocks.filter(item => item.id !== id);
+      const blocksToKeep = blocks.filter(item => item.id !== id).map((item, order) => ({
+        ...item,
+        order
+      }));
       setBlocks([...blocksToKeep]);
       focusElement(blocksToKeep[currentIndex - 1]?.id);
     }
@@ -123,14 +150,20 @@ const GutembergEditor = () => {
       const blocksFromPastedContent = parsePastedContent(pastedContent, id, block);
       if (blocksFromPastedContent?.length) {
         event.preventDefault();
-        setBlocks((oldData) => oldData.reduce((acc, item) => {
+        setBlocks((oldData) => oldData.reduce((acc, item, order) => {
           const isNode = item.id === id
           if (isNode) {
-            blocksFromPastedContent.forEach(block => {
-              acc.push(block)
+            blocksFromPastedContent.forEach((block) => {
+              acc.push({
+                ...block,
+                order: acc?.length
+              })
             })
           } else {
-            acc.push(item)
+            acc.push({
+              ...item,
+              order: acc?.length
+            })
           }
           return acc
         }, []));
@@ -140,6 +173,8 @@ const GutembergEditor = () => {
 
   const handleFocus = (e) => {
     const currentElement = e.currentTarget;
+    const { id } = currentElement
+    const { value, tag } = getBlockFromId(id)
     const range = document.createRange();
     const selection = window.getSelection();
 
@@ -148,23 +183,43 @@ const GutembergEditor = () => {
     range.collapse(false);
     selection.removeAllRanges();
     selection.addRange(range);
+    setBlocks((oldData) => oldData.map(item => ({
+      ...item,
+      editing: tag === 'h1' ? false : item.id === id && !!value
+    })))
   };
 
   const handlerChangeType = (initialSelected, id) => {
-    const newBlocks = blocks.map((item) => ({
+    setBlocks((oldData) => oldData.map((item) => ({
       ...item,
       tag: item.id === id ? initialSelected?.tag : item.tag,
       value: item.id === id ? initialSelected?.value : item.value,
-    }))
-    setBlocks(newBlocks)
+    })))
     focusElement(id);
   }
 
+  const handlerEdition = (type, id, tagName) => {
+    if (type === 'transform') {
+      transformAction(id, tagName);
+    }
+    setBlocks((oldData) => oldData.map((item) => {
+      const currentInput = getRefFromId(item.id)
+      const { current } = currentInput?.el
+      return ({
+        ...item,
+        value: current.id === id ? current?.innerHTML : item.value
+      })
+    }))
+  }
+
   return <>
-    {blocks?.map(({ id, value, tag }, i) => {
+    {blocks?.map(({ id, value, tag, editing }, i) => {
       return (
-        <div key={id} className="flex items-baseline gap-4">
-          <GutembergContentEditable value={value} 
+        <div key={id} className="relative flex items-baseline gap-4 p-2 transition-colors border border-transparent hover:border-blue-gray-500 focus-within:border-blue-gray-500">
+          {
+            editing && value ? <GutembergPopoverEditing tag={tag} id={id} handlerEdition={handlerEdition} /> : null
+          }
+          <GutembergContentEditable value={value}
             id={id} tag={tag} ref={el => (inputRef.current[i] = el)}
             onFocus={handleFocus}
             onChange={handleContentChange}
