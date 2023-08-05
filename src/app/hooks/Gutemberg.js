@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { INITIAL_BLOCKS } from '@/app/constants/gutemberg'
+import { isH1, isList } from '../libs/clipboard';
 
 export const useBlocks = () => {
   const [blocks, setBlocks] = useState([]);
@@ -23,8 +24,8 @@ export const useBlocks = () => {
   }
 
   const createNewBlock = (id, ref, newId) => {
-    const isList = ref.tagName === 'UL'
-    if (isList) {
+    const isTagNameList = isList(ref.tagName)
+    if (isTagNameList) {
       createNewListBlock(id, ref)
     } else {
       const newBlock = { tag: 'p', id: newId };
@@ -35,7 +36,7 @@ export const useBlocks = () => {
           ...item,
           order
         })
-        if (isNode && !isList) {
+        if (isNode && !isTagNameList) {
           acc.push({
             ...newBlock,
             order: index + 1
@@ -78,7 +79,7 @@ export const useBlocks = () => {
   const editingField = (id, value, tag) => {
     setBlocks((oldData) => oldData.map(item => ({
       ...item,
-      editing: tag === 'h1' ? false : item.id === id && !!value
+      editing: isH1(tag) ? false : item.id === id && !!value
     })))
   }
 
@@ -96,4 +97,21 @@ export const useBlocks = () => {
   }, [])
 
   return { blocks, removeAllPopover, getBlockFromId, updateValue, createNewBlock, removeBlock, createSeveralBlocks, editingField, changeTypeBlock }
+}
+
+export const useFocus = (inputRef) => {
+  const getRefFromId = (id) => inputRef.current.find(item => item?.el?.current?.id === id) ||
+  inputRef.current.find(item => item?.id === id)
+  
+  const focusElement = (id) => {
+    setTimeout(() => {
+      const newElement = getRefFromId(id);
+      if (isList(newElement?.tagName)) {
+        newElement.lastElementChild.focus()
+      } else {
+        newElement?.el.current?.focus();
+      }
+    }, 0);
+  }
+  return { getRefFromId, focusElement }
 }

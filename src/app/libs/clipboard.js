@@ -78,4 +78,6 @@ export const wrapText = (str) => {
   return result;
 }
 
-export const isList = (tagName) => tagName?.toLowerCase() === 'LI' || tagName?.toLowerCase() || 'UL' || tagName?.toLowerCase() === 'OL'
+export const isList = (tagName) => tagName?.toLowerCase() === 'li' || tagName?.toLowerCase() === 'ul' || tagName?.toLowerCase() === 'ol'
+
+export const isH1 = (tagName) => tagName?.toLowerCase() === 'h1'

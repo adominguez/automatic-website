@@ -1,15 +1,16 @@
 'use client'
 import { useRef, useEffect } from "react"
 import { v4 as uuidv4 } from 'uuid';
-import { useBlocks } from '@/app/hooks/Gutemberg'
+import { useBlocks, useFocus } from '@/app/hooks/Gutemberg'
 import GutembergPopover from "./GutembergPopover";
 import GutembergContentEditable from "./GutembergContentEditable";
 import GutembergPopoverEditing from "./GutembergPopoverEditing";
-import { transformAction, parsePastedContent, wrapText } from '@/app/libs/clipboard'
+import { transformAction, parsePastedContent, wrapText, isList, isH1 } from '@/app/libs/clipboard'
 
 const GutembergEditor = () => {
   const {blocks, removeAllPopover, getBlockFromId, updateValue, createNewBlock, removeBlock, createSeveralBlocks, editingField, changeTypeBlock} = useBlocks();
   const inputRef = useRef([]);
+  const { getRefFromId, focusElement } = useFocus(inputRef)
 
   const handleclick = (e) => {
     const currentInput = getRefFromId(e.target.id);
@@ -25,20 +26,6 @@ const GutembergEditor = () => {
     };
   }, []);
 
-  const getRefFromId = (id) => inputRef.current.find(item => item?.el?.current?.id === id) ||
-    inputRef.current.find(item => item?.id === id)
-
-  const focusElement = (id) => {
-    setTimeout(() => {
-      const newElement = getRefFromId(id);
-      if (newElement.tagName === 'UL') {
-        newElement.lastElementChild.focus()
-      } else {
-        newElement?.el.current?.focus();
-      }
-    }, 0);
-  }
-
   const handleContentChange = (evt, id) => {
     const { target, currentTarget } = evt;
     const isList = currentTarget.tagName === 'LI'
@@ -48,7 +35,6 @@ const GutembergEditor = () => {
   }
 
   const handleKeyDown = (event, id, tag, value) => {
-    const hasList = tag === 'ul'
     if (event.key === "Enter" && event.shiftKey) {
       return;
     }
@@ -59,11 +45,11 @@ const GutembergEditor = () => {
         if (tag !== 'h1') {
           createNewBlock(id, getRefFromId(id), newId)
         }
-        focusElement(hasList ? id : newId)
+        focusElement(isList(tag) ? id : newId)
       }
     }
-    const hasPosibleLength = blocks?.length > 2 || blocks.some(item => item.value?.length > 0 && item.tag !== 'h1');
-    if (event.key === 'Backspace' && event.target.innerHTML.trim() === '' && hasPosibleLength && tag !== 'h1') {
+    const hasPosibleLength = blocks?.length > 2 || blocks.some(item => item.value?.length > 0 && !isH1(item.tag));
+    if (event.key === 'Backspace' && event.target.innerHTML.trim() === '' && hasPosibleLength && !isH1(tag)) {
       removeBlock(id)
       const currentIndex = blocks.findIndex(item => item.id === id);
       focusElement(inputRef.current[currentIndex - 1].el.current.id);
@@ -100,8 +86,9 @@ const GutembergEditor = () => {
   };
 
   const handleFocus = (e) => {
-    const currentElement = e.currentTarget;
-    if (currentElement.tagName === 'LI') {
+    const currentElement = e.currentTarget
+    const { tagName } = currentElement;
+    if (isList(tagName)) {
       e.preventDefault()
       return
     }
