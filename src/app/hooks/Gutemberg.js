@@ -21,6 +21,12 @@ export const useBlocks = () => {
     })))
   }
 
+  const getDisabledOrder = (index) => (
+  {
+    downDisabled: index === 0 || index === blocks?.length - 1,
+    upDisabled: index === 0 || index === 1
+  })
+
   const createBlock = (id, newId, isTagNameList) => {
     const newBlock = { tag: 'p', id: newId };
     setBlocks(oldData => oldData.reduce((acc, item, index) => {
@@ -28,12 +34,14 @@ export const useBlocks = () => {
       const order = acc.some(block => block.id === newId) ? index + 1 : index
       acc.push({
         ...item,
-        order
+        order,
+        ...getDisabledOrder(index)
       })
       if (isNode && !isTagNameList) {
         acc.push({
           ...newBlock,
-          order: index + 1
+          order: index + 1,
+          ...getDisabledOrder(index + 1)
         })
       }
       return acc
@@ -43,7 +51,8 @@ export const useBlocks = () => {
   const removeBlockById = (id) => {
     setBlocks((oldData) => oldData.filter(item => item.id !== id).map((item, order) => ({
       ...item,
-      order
+      order,
+      ...getDisabledOrder(order)
     })));
   }
 
@@ -86,13 +95,15 @@ export const useBlocks = () => {
         newBlocks.forEach((block) => {
           acc.push({
             ...block,
-            order: acc?.length
+            order: acc?.length,
+            ...getDisabledOrder(acc?.length)
           })
         })
       } else {
         acc.push({
           ...item,
-          order: acc?.length
+          order: acc?.length,
+          ...getDisabledOrder(acc?.length)
         })
       }
       return acc
@@ -124,11 +135,17 @@ export const useBlocks = () => {
     })))
   }
 
+  const sortBlockInBlocks = (type, id) => {
+    /*
+    * TODO -> Hay que realizar el sort de los datos, no se está haciendo nada
+    */
+  }
+
   useEffect(() => {
     setBlocks(INITIAL_BLOCKS)
   }, [])
 
-  return { blocks, removeAllPopover, getBlockFromId, updateValue, createNewBlock, removeBlock, createSeveralBlocks, editingField, changeTypeBlock }
+  return { blocks, removeAllPopover, getBlockFromId, updateValue, createNewBlock, removeBlock, createSeveralBlocks, editingField, changeTypeBlock, sortBlockInBlocks }
 }
 
 export const useFocus = (inputRef) => {

@@ -103,3 +103,18 @@ export const Italic = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="curre
 export const Underline = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
   <path fill="none" stroke="currentColor" d="M 4.396 20.641 L 19.604 20.641 M 6.47 3.359 L 6.47 12.346 C 6.47 16.602 11.078 19.264 14.765 17.135 C 16.477 16.147 17.53 14.321 17.53 12.346 L 17.53 3.359"></path>
 </svg>)
+
+export const UpButton = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+</svg>
+)
+
+export const DownButton = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+</svg>
+)
+
+export const Separator = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path fill="none" strokeLinejoin="round" strokeWidth="2" d="M 3 11.995 L 3 12.005 M 7 11.995 L 17 11.995 M 21 11.995 L 21 12.005"></path>
+</svg>
+)

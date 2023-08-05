@@ -1,9 +1,9 @@
-import { Bookmark, Content, List, Bold, Italic, Underline } from '@/app/components/Icons'
+import { Bookmark, Content, List, Bold, Italic, Underline, Separator } from '@/app/components/Icons'
 import { v4 as uuidv4 } from 'uuid';
 
 export const INITIAL_BLOCKS = [
-  { tag: 'h1', id: uuidv4(), value: '', order: 0 },
-  { tag: 'p', id: uuidv4(), value: '', order: 1 },
+  { tag: 'h1', id: uuidv4(), value: '', order: 0, downDisabled: true, upDisabled: true },
+  { tag: 'p', id: uuidv4(), value: '', order: 1, downDisabled: false, upDisabled: true },
 ];
 
 export const TYPE_BY_TAG = {
@@ -50,13 +50,11 @@ export const TYPES_OF_CONTENT = {
       icon: <Bold />,
       type: 'transform',
       tagName: 'b'
-    },
-    {
+    }, {
       icon: <Italic />,
       type: 'transform',
       tagName: 'i'
-    },
-    {
+    }, {
       icon: <Underline />,
       type: 'transform',
       tagName: 'u'
@@ -75,16 +73,22 @@ export const TYPES_OF_CONTENT = {
       { label: 'ordenada', type: 'ol' }
     ],
     icon: <List />
+  },
+  Separator: {
+    label: 'Separador',
+    initialSelected: {tag: 'hr'},
+    icon: <Separator />
   }
 }
 
 export const classByTag = {
-  h1: 'text-3xl font-bold',
-  h2: 'text-2xl font-semibold',
-  h3: 'text-xl font-semibold',
-  p: 'my-2 text-base',
-  ul: 'my-4 text-base',
-  li: 'my-2 ml-4 text-base',
+  h1: 'placeholder text-3xl font-bold',
+  h2: 'placeholder text-2xl font-semibold',
+  h3: 'placeholder text-xl font-semibold',
+  p: 'placeholder my-2 text-base',
+  ul: 'placeholder my-4 text-base',
+  li: 'placeholder my-2 ml-4 text-base',
+  hr: 'py-4 cursor-auto'
 }
 
 export const ariaByTag = {

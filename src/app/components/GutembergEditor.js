@@ -4,11 +4,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { useBlocks, useFocus } from '@/app/hooks/Gutemberg'
 import GutembergPopover from "./GutembergPopover";
 import GutembergContentEditable from "./GutembergContentEditable";
+import {PlusSmall} from "@/app/components/Icons"
 import GutembergPopoverEditing from "./GutembergPopoverEditing";
 import { transformAction, parsePastedContent, wrapText, isList, isH1, getListValues } from '@/app/libs/clipboard'
+import { Button } from '@/app/components/MaterialComponents'
 
 const GutembergEditor = () => {
-  const {blocks, removeAllPopover, getBlockFromId, updateValue, createNewBlock, removeBlock, createSeveralBlocks, editingField, changeTypeBlock} = useBlocks();
+  const {blocks, removeAllPopover, getBlockFromId, updateValue, createNewBlock, removeBlock, createSeveralBlocks, editingField, changeTypeBlock, sortBlockInBlocks} = useBlocks();
   const inputRef = useRef([]);
   const { getRefFromId, focusElement } = useFocus(inputRef)
 
@@ -34,6 +36,16 @@ const GutembergEditor = () => {
     updateValue(id, newValue)
   }
 
+  const createBlock = (id, value, tag) => {
+    if (value) {
+      const newId = uuidv4()
+      if (!isH1(tag)) {
+        createNewBlock(id, getRefFromId(id), newId)
+      }
+      focusElement(isList(tag) && getListValues(getRefFromId(id)?.innerHTML).slice(-1)?.[0] !== '' ? id : newId)
+    }
+  }
+
   const handleKeyDown = (event, id, tag, value) => {
     const currentIndex = blocks.findIndex(item => item.id === id);
     if (event.key === "Enter" && event.shiftKey) {
@@ -41,16 +53,10 @@ const GutembergEditor = () => {
     }
     if (event.key === 'Enter') {
       event.preventDefault();
-      if (value) {
-        const newId = uuidv4()
-        if (tag !== 'h1') {
-          createNewBlock(id, getRefFromId(id), newId)
-        }
-        focusElement(isList(tag) && getListValues(getRefFromId(id)?.innerHTML).slice(-1)?.[0] !== '' ? id : newId)
-      }
+      createBlock(id, value, tag)
     }
     const hasPosibleLength = blocks?.length > 2 || blocks.some(item => item.value?.length > 0 && !isH1(item.tag));
-    if (event.key === 'Backspace' && event.target.innerHTML.trim() === '' && hasPosibleLength && !isH1(tag)) {
+    if (event.key === 'Backspace' && (event.target.innerHTML.trim() === '' || tag === 'hr') && hasPosibleLength && !isH1(tag)) {
       removeBlock(id, inputRef.current[currentIndex])
       if (isList(inputRef.current[currentIndex].tagName)) {
         focusElement(id)
@@ -123,12 +129,30 @@ const GutembergEditor = () => {
     updateValue(id, current.innerHTML)
   }
 
+  const orderBlock = (type, id, tagName) => {
+    sortBlockInBlocks(type, id)
+  }
+
+  const getPlusButton = () => {
+    const lastCurrent = inputRef.current.slice(-1)
+    const value = lastCurrent?.[0]?.innerHTML || lastCurrent?.[0]?.el?.current?.innerHTML
+    const id = lastCurrent?.[0]?.id || lastCurrent?.[0]?.el?.current?.id
+    const tag = lastCurrent?.tagName || lastCurrent?.[0]?.el?.current?.tagName
+    return value ?
+    <div className="flex justify-end w-full my-4">
+      <Button color="blue-gray" className="flex items-center justify-center w-8 h-8 p-0" onClick={() => createBlock(id, value, tag)}>
+        <PlusSmall />
+      </Button>
+    </div>
+  : null
+  }
+
   return <>
-    {blocks?.map(({ id, value, tag, editing }, i) => {
+    {blocks?.map(({ id, value, tag, editing, upDisabled, downDisabled }, i) => {
       return (
         <div key={id} className="relative flex items-baseline gap-4 p-2 transition-colors border border-transparent hover:border-blue-gray-500 focus-within:border-blue-gray-500">
           {
-            editing && value ? <GutembergPopoverEditing tag={tag} id={id} handlerEdition={handlerEdition} /> : null
+            editing && value ? <GutembergPopoverEditing tag={tag} id={id} downDisabled={downDisabled} upDisabled={upDisabled} handlerEdition={handlerEdition} orderBlock={orderBlock} /> : null
           }
           <GutembergContentEditable value={value}
             id={id} tag={tag} ref={el => (inputRef.current[i] = el)}
@@ -143,7 +167,9 @@ const GutembergEditor = () => {
         </div>
       )
     })}
-    Create New block
+    {
+      getPlusButton()
+    }
   </>
 }
 

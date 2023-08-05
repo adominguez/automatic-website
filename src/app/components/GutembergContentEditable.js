@@ -3,7 +3,15 @@ import ContentEditable from 'react-contenteditable'
 import { ariaByTag, classByTag } from '@/app/constants/gutemberg'
 import { isList } from '../libs/clipboard';
 
-const getClassName = (value, tag) => `default-field placeholder ${classByTag[tag]} ${value?.length ? `opacity-100` : 'opacity-50'}`
+const getClassName = (value, tag) => `default-field ${classByTag[tag]} ${value?.length ? `opacity-100` : 'opacity-50'}`
+
+const tagNameByTag = {
+  hr: 'div'
+}
+
+const valueByTag = {
+  hr: '<hr />'
+}
 
 const GutembergContentEditable = forwardRef(function GutembergContentEditable({ value, id, tag, onChange, onKeyDown, onPaste, onFocus }, ref) {
 
@@ -39,7 +47,7 @@ const GutembergContentEditable = forwardRef(function GutembergContentEditable({ 
           className={`flex-1 gap-4 ${getClassName(value, tag)}`}
           aria-label={ariaByTag[tag]}
           id={id}
-          html={value || ''} tagName={tag}
+          html={valueByTag[tag] || value || ''} tagName={tagNameByTag[tag] || tag}
           ref={ref}
           onChange={(e) => onChange(e, id)}
           onKeyDown={(e) => onKeyDown(e, id, tag, value)}

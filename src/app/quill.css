@@ -30,7 +30,9 @@
   outline: none;
 }
 
-
+hr {
+  @apply h-0 border-t border-b border-t-blue-gray-900/10 border-b-blue-gray-50/30;
+}
 
 .placeholder {
   @apply transition-all border-b border-b-transparent;
