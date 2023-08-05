@@ -81,3 +81,14 @@ export const wrapText = (str) => {
 export const isList = (tagName) => tagName?.toLowerCase() === 'li' || tagName?.toLowerCase() === 'ul' || tagName?.toLowerCase() === 'ol'
 
 export const isH1 = (tagName) => tagName?.toLowerCase() === 'h1'
+
+export const getListValues = (value) => {
+  const regex = /<li[^>]*>(.*?)<\/li>/gi;
+  const matches = [];
+  let match;
+
+  while ((match = regex.exec(value)) !== null) {
+    matches.push(match[1]);
+  }
+  return matches
+}

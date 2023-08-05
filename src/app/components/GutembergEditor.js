@@ -5,7 +5,7 @@ import { useBlocks, useFocus } from '@/app/hooks/Gutemberg'
 import GutembergPopover from "./GutembergPopover";
 import GutembergContentEditable from "./GutembergContentEditable";
 import GutembergPopoverEditing from "./GutembergPopoverEditing";
-import { transformAction, parsePastedContent, wrapText, isList, isH1 } from '@/app/libs/clipboard'
+import { transformAction, parsePastedContent, wrapText, isList, isH1, getListValues } from '@/app/libs/clipboard'
 
 const GutembergEditor = () => {
   const {blocks, removeAllPopover, getBlockFromId, updateValue, createNewBlock, removeBlock, createSeveralBlocks, editingField, changeTypeBlock} = useBlocks();
@@ -35,6 +35,7 @@ const GutembergEditor = () => {
   }
 
   const handleKeyDown = (event, id, tag, value) => {
+    const currentIndex = blocks.findIndex(item => item.id === id);
     if (event.key === "Enter" && event.shiftKey) {
       return;
     }
@@ -45,30 +46,33 @@ const GutembergEditor = () => {
         if (tag !== 'h1') {
           createNewBlock(id, getRefFromId(id), newId)
         }
-        focusElement(isList(tag) ? id : newId)
+        focusElement(isList(tag) && getListValues(getRefFromId(id)?.innerHTML).slice(-1)?.[0] !== '' ? id : newId)
       }
     }
     const hasPosibleLength = blocks?.length > 2 || blocks.some(item => item.value?.length > 0 && !isH1(item.tag));
     if (event.key === 'Backspace' && event.target.innerHTML.trim() === '' && hasPosibleLength && !isH1(tag)) {
-      removeBlock(id)
-      const currentIndex = blocks.findIndex(item => item.id === id);
-      focusElement(inputRef.current[currentIndex - 1].el.current.id);
+      removeBlock(id, inputRef.current[currentIndex])
+      if (isList(inputRef.current[currentIndex].tagName)) {
+        focusElement(id)
+      } else {
+        focusElement(inputRef.current[currentIndex - 1].el.current.id);
+      }
     }
     if (event.key === 'ArrowUp') {
-      const elementIndex = inputRef.current.findIndex(item => item.el.current.id === event.currentTarget.id);
-      if (elementIndex > 0) {
+      if (currentIndex > 0) {
         const selection = window.getSelection()
 
         if (selection && selection.anchorOffset === 0 && selection.focusOffset === 0) {
-          inputRef.current[elementIndex - 1]?.el.current?.focus();
+          const focusId = inputRef.current[currentIndex - 1]?.id || inputRef.current[currentIndex - 1]?.el?.current?.id
+          focusElement(focusId)
           return;
         }
       }
     }
     if (event.key === 'ArrowDown') {
-      const elementIndex = inputRef.current.findIndex(item => item.el.current.id === event.currentTarget.id);
-      if (elementIndex <= blocks?.length) {
-        inputRef.current[elementIndex + 1]?.el.current?.focus();
+      if (currentIndex <= inputRef.current?.length) {
+        const focusId = inputRef.current[currentIndex + 1]?.id || inputRef.current[currentIndex + 1]?.el?.current?.id
+        focusElement(focusId)
       }
     }
   }

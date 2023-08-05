@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { INITIAL_BLOCKS } from '@/app/constants/gutemberg'
-import { isH1, isList } from '../libs/clipboard';
+import { isH1, isList, getListValues } from '../libs/clipboard';
 
 export const useBlocks = () => {
   const [blocks, setBlocks] = useState([]);
+
+  const getBlockFromId = (id) => blocks.find(item => item?.id === id)
 
   const removeAllPopover = () => {
     setBlocks((oldData) => oldData.map((item) => ({
@@ -19,31 +21,61 @@ export const useBlocks = () => {
     })))
   }
 
-  const createNewListBlock = (id, ref) => {
-    updateValue(id, `${ref.innerHTML}<li></li>`)
+  const createBlock = (id, newId, isTagNameList) => {
+    const newBlock = { tag: 'p', id: newId };
+    setBlocks(oldData => oldData.reduce((acc, item, index) => {
+      const isNode = item.id === id;
+      const order = acc.some(block => block.id === newId) ? index + 1 : index
+      acc.push({
+        ...item,
+        order
+      })
+      if (isNode && !isTagNameList) {
+        acc.push({
+          ...newBlock,
+          order: index + 1
+        })
+      }
+      return acc
+    }, []))
+  }
+
+  const removeBlockById = (id) => {
+    setBlocks((oldData) => oldData.filter(item => item.id !== id).map((item, order) => ({
+      ...item,
+      order
+    })));
+  }
+
+  const removeListItem = (id, ref) => {
+    const value = ref.innerHTML
+    const splittedValue = value.split('</li>')
+    const newValue = splittedValue.slice(0, splittedValue?.length - 2)
+      .map(item => `${item}</li>`).join('')
+    if (newValue) {
+      updateValue(id, newValue)
+    } else {
+      removeBlockById(id)
+    }
+  }
+
+  const createNewListBlock = (id, ref, newId, isTagNameList) => {
+    const value = ref.innerHTML
+    const matches = getListValues(value)
+    if (matches.slice(-1)?.[0] === '') {
+      createBlock(id, newId)
+      removeListItem(id, ref)
+    }  else {
+      updateValue(id, `${value}<li></li>`)
+    }
   }
 
   const createNewBlock = (id, ref, newId) => {
-    const isTagNameList = isList(ref.tagName)
+    const isTagNameList = isList(ref?.tagName)
     if (isTagNameList) {
-      createNewListBlock(id, ref)
+      createNewListBlock(id, ref, newId, isTagNameList)
     } else {
-      const newBlock = { tag: 'p', id: newId };
-      setBlocks(oldData => oldData.reduce((acc, item, index) => {
-        const isNode = item.id === id;
-        const order = acc.some(block => block.id === newId) ? index + 1 : index
-        acc.push({
-          ...item,
-          order
-        })
-        if (isNode && !isTagNameList) {
-          acc.push({
-            ...newBlock,
-            order: index + 1
-          })
-        }
-        return acc
-      }, []))
+      createBlock(id, newId, isTagNameList)
     }
   }
 
@@ -67,14 +99,14 @@ export const useBlocks = () => {
     }, []));
   }
 
-  const removeBlock = (id) => {
-    setBlocks((oldData) => oldData.filter(item => item.id !== id).map((item, order) => ({
-      ...item,
-      order
-    })));
+  const removeBlock = (id, ref) => {
+    const block = getBlockFromId(id);
+    if (isList(block.tag)) {
+      removeListItem(id, ref)
+    } else {
+      removeBlockById(id)
+    }
   }
-
-  const getBlockFromId = (id) => blocks.find(item => item?.id === id)
 
   const editingField = (id, value, tag) => {
     setBlocks((oldData) => oldData.map(item => ({

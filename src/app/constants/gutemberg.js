@@ -30,10 +30,12 @@ export const TYPES_OF_CONTENT = {
     ],
     editingButtons: [{
       icon: <Bookmark />,
-      type: 'convert'
+      type: 'convert',
+      tagName: 'h1'
     }, {
       icon: <Bold />,
-      type: 'bold'
+      type: 'bold',
+      tagName: 'b'
     }],
     initialSelected: { label: 'h2', tag: 'h2', value: '' },
     icon: <Bookmark />,
@@ -67,7 +69,7 @@ export const TYPES_OF_CONTENT = {
   },
   list: {
     label: 'Listado',
-    initialSelected: { label: 'desordenada', tag: 'ul', value: '<li contenteditable="true"></li>' },
+    initialSelected: { label: 'desordenada', tag: 'ul', value: '<li></li>' },
     types: [
       { label: 'desordenada', tag: 'ul' },
       { label: 'ordenada', type: 'ol' }
@@ -82,12 +84,12 @@ export const classByTag = {
   h3: 'text-xl font-semibold',
   p: 'my-2 text-base',
   ul: 'my-4 text-base',
-  li: 'my-4 text-base',
+  li: 'my-2 ml-4 text-base',
 }
 
 export const ariaByTag = {
   h1: 'Escribe un título',
   h2: 'Encabezado',
   p: 'teclea/para elegir un bloque',
-  ul: 'Listado'
+  li: 'Listado de cosas'
 }
