@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 const REGEX_BY_TAG = {
   b: {
     regex: /^<b[^>]*>(.*?)<\/b>$/,
@@ -43,3 +45,37 @@ export const transformAction = (id, tag) => {
     editor.innerHTML = `<${tag}>${allContent.replace(REGEX_BY_TAG[tag].regexContent, '$1')}</${tag}>`;
   }
 }
+
+
+export const parsePastedContent = (content, id, block) => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, 'text/html');
+  const validTags = ['h1', 'h2', 'h3', 'p', 'ul', 'li', 'span']; // Lista de etiquetas válidas en tu contexto
+
+  const blocksFromTags = Array.from(doc.body.childNodes).reduce((blocks, node, index) => {
+    if (node.nodeType === Node.ELEMENT_NODE && validTags.includes(node.tagName.toLowerCase())) {
+      const tag = node.tagName.toLowerCase() === 'span' ? block.tag : node.tagName.toLowerCase();
+      const value = node.innerHTML.trim() || block.value;
+      if (value !== '') {
+        const block = { tag, value, id: index === 0 ? id : uuidv4() };
+        return [...blocks, block];
+      }
+    }
+    return blocks;
+  }, []);
+
+  return blocksFromTags;
+};
+
+export const wrapText = (str) => {
+  let result = str.replace(/&nbsp;/g, ' ');
+  let matches = result.match(/(<[^>]+>)/g);
+  if (matches) {
+    let tag = matches[0];
+    result = result.replace(tag, '');
+    result = tag + result;
+  }
+  return result;
+}
+
+export const isList = (tagName) => tagName?.toLowerCase() === 'LI' || tagName?.toLowerCase() || 'UL' || tagName?.toLowerCase() === 'OL'
