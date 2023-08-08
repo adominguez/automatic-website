@@ -33,7 +33,7 @@ const GutembergContentEditable = forwardRef(function GutembergContentEditable({ 
             <ContentEditable
               key={`${id}-${index}`}
               id={`${id}-${index}`}
-              className={`flex-1 gap-4 ${getClassName(item.innerHTML, 'li')}`}
+              className={`content-editable flex-1 gap-4 ${getClassName(item.innerHTML, 'li')}`}
               html={item.innerHTML || ''} tagName='li'
               aria-label={ariaByTag.li}
               onChange={(e) => onChange(e, id)}
@@ -44,7 +44,7 @@ const GutembergContentEditable = forwardRef(function GutembergContentEditable({ 
           ))
         )
         : <ContentEditable
-          className={`flex-1 gap-4 ${getClassName(value, tag)}`}
+          className={`content-editable flex-1 gap-4 ${getClassName(value, tag)}`}
           aria-label={ariaByTag[tag]}
           id={id}
           html={valueByTag[tag] || value || ''} tagName={tagNameByTag[tag] || tag}

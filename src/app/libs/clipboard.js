@@ -13,9 +13,13 @@ const REGEX_BY_TAG = {
     regex: /^<u[^>]*>(.*?)<\/u>$/,
     regexContent: /<u[^>]*>(.*?)<\/u>/g
   },
+  a: {
+    regex: /^<a[^>]*>(.*?)<\/a>$/,
+    regexContent: /<a[^>]*>(.*?)<\/a>/g
+  },
 };
 
-export const transformAction = (id, tag) => {
+export const transformAction = ({id, tagName, link}) => {
   const editor = document.getElementById(id);
   const selection = window.getSelection();
   const range = selection.getRangeAt(0);
@@ -26,23 +30,63 @@ export const transformAction = (id, tag) => {
     const commonAncestor = range.commonAncestorContainer.parentElement;
 
     // Verificar si el elemento más cercano es <b> (negrita)
-    if (commonAncestor.tagName?.toLowerCase() === tag) {
+    if (commonAncestor.tagName?.toLowerCase() === tagName) {
       // Si el texto seleccionado ya está en negrita, quitar el estilo
       commonAncestor.outerHTML = commonAncestor.innerHTML;
     } else {
       // Si el texto seleccionado no está en negrita, envolverlo con <b> para aplicar el estilo
-      const boldElement = document.createElement(tag);
+      const boldElement = document.createElement(tagName);
       boldElement.appendChild(range.extractContents());
       range.insertNode(boldElement);
     }
   } else {
-    const regex = REGEX_BY_TAG[tag].regex;
+    const regex = REGEX_BY_TAG[tagName].regex;
     // Si no hay texto seleccionado, envolver todo el contenido con <b> para aplicar el estilo
     const allContent = editor.innerHTML;
     if (regex.test(allContent)) {
-      editor.innerHTML = `${allContent.replace(REGEX_BY_TAG[tag].regexContent, '$1')}`
+      editor.innerHTML = `${allContent.replace(REGEX_BY_TAG[tagName].regexContent, '$1')}`
     }
-    editor.innerHTML = `<${tag}>${allContent.replace(REGEX_BY_TAG[tag].regexContent, '$1')}</${tag}>`;
+    editor.innerHTML = `<${tagName}>${allContent.replace(REGEX_BY_TAG[tagName].regexContent, '$1')}</${tagName}>`;
+  }
+}
+
+const createLink = ({url, rel, newTab, textLink}) => {
+  const linkElement = document.createElement('a');
+  linkElement.href = url
+  if (rel) {
+    linkElement.rel = rel
+  }
+  if (newTab) {
+    linkElement.target = '_blank'
+  }
+  linkElement.alt = url
+  linkElement.innerHTML = textLink
+  return linkElement
+}
+
+export const linkAction = ({id, tagName, link, range}) => {
+  const editor = document.getElementById(id);
+  const { textLink, url, noFollow, sponsored, newTab, isSelectedText } = link
+  const rel = `${noFollow ? 'noFollow' : ''}${sponsored ? ' sponsored' : ''}`
+  // Verificar si hay texto seleccionado
+  const linkElement = createLink({url, rel, newTab, textLink})
+  if (isSelectedText) {
+    // Obtener el elemento más cercano que envuelve al texto seleccionado
+    const commonAncestor = range.commonAncestorContainer.parentElement;
+
+    // Verificar si el elemento más cercano es <b> (negrita)
+    if (commonAncestor.tagName?.toLowerCase() === tagName) {
+      // Si el texto seleccionado ya está en negrita, quitar el estilo
+      commonAncestor.outerHTML = linkElement.outerHTML;
+    } else {
+      // Si el texto seleccionado no está en negrita, envolverlo con <b> para aplicar el estilo
+      range.extractContents()
+      range.insertNode(linkElement);
+    }
+  } else {
+    // Si no hay texto seleccionado, envolver todo el contenido con <b> para aplicar el estilo
+    const allContent = editor.innerHTML;
+    editor.innerHTML = `${allContent}${linkElement.outerHTML}`;
   }
 }
 

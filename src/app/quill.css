@@ -30,8 +30,13 @@
   outline: none;
 }
 
-hr {
+
+.content-editable hr {
   @apply h-0 border-t border-b border-t-blue-gray-900/10 border-b-blue-gray-50/30;
+}
+
+.content-editable a {
+  @apply cursor-pointer text-blue-gray-600 hover:text-blue-gray-800;
 }
 
 .placeholder {

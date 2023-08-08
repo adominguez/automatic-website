@@ -1,4 +1,4 @@
-import { Bookmark, Content, List, Bold, Italic, Underline, Separator } from '@/app/components/Icons'
+import { Bookmark, Content, List, Bold, Italic, Underline, Separator, Url, Picture } from '@/app/components/Icons'
 import { v4 as uuidv4 } from 'uuid';
 
 export const INITIAL_BLOCKS = [
@@ -58,6 +58,14 @@ export const TYPES_OF_CONTENT = {
       icon: <Underline />,
       type: 'transform',
       tagName: 'u'
+    }, {
+      icon: <Url />,
+      type: 'link',
+      tagName: 'a'
+    }, {
+      icon: <Picture />,
+      type: 'picture',
+      tagName: 'img'
     }],
     types: [
       { label: 'párrafo', tag: 'p' },

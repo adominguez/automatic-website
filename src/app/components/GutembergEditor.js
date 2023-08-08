@@ -1,12 +1,12 @@
 'use client'
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { v4 as uuidv4 } from 'uuid';
 import { useBlocks, useFocus } from '@/app/hooks/Gutemberg'
 import GutembergPopover from "./GutembergPopover";
 import GutembergContentEditable from "./GutembergContentEditable";
 import {PlusSmall} from "@/app/components/Icons"
 import GutembergPopoverEditing from "./GutembergPopoverEditing";
-import { transformAction, parsePastedContent, wrapText, isList, isH1, getListValues } from '@/app/libs/clipboard'
+import { transformAction, linkAction, parsePastedContent, wrapText, isList, isH1, getListValues } from '@/app/libs/clipboard'
 import { Button } from '@/app/components/MaterialComponents'
 
 const GutembergEditor = () => {
@@ -15,8 +15,13 @@ const GutembergEditor = () => {
   const { getRefFromId, focusElement } = useFocus(inputRef)
 
   const handleclick = (e) => {
+    const {target} = e
     const currentInput = getRefFromId(e.target.id);
-    if (!currentInput) {
+    const a = inputRef.current
+    const isPopover = target.classList.contains('popover-content') ||
+    target?.parentElement?.parentElement?.classList?.contains('popover-content') ||
+    target?.parentElement?.parentElement?.parentElement?.classList.contains('popover-content')
+    if (!currentInput && !target.closest('button') && !isPopover) {
       removeAllPopover()
     }
   }
@@ -120,13 +125,17 @@ const GutembergEditor = () => {
     focusElement(id);
   }
 
-  const handlerEdition = (type, id, tagName) => {
+  const handlerEdition = ({type, id, tagName, link, range}) => {
     if (type === 'transform') {
-      transformAction(id, tagName);
+      transformAction({id, tagName});
+    }
+    if (type === 'link') {
+      linkAction({id, tagName, link, range})
     }
     const currentInput = getRefFromId(id)
     const { current } = currentInput?.el
     updateValue(id, current.innerHTML)
+    current.focus()
   }
 
   const orderBlock = (type, id, tagName) => {
@@ -148,9 +157,9 @@ const GutembergEditor = () => {
   }
 
   return <>
-    {blocks?.map(({ id, value, tag, editing, upDisabled, downDisabled }, i) => {
+    {blocks?.map(({ id, value, tag, editing, upDisabled, downDisabled, openLink }, i) => {
       return (
-        <div key={id} className="relative flex items-baseline gap-4 p-2 transition-colors border border-transparent hover:border-blue-gray-500 focus-within:border-blue-gray-500">
+        <div key={id} className="relative flex items-baseline gap-4 p-2 transition-colors border border-transparent popover-content hover:border-blue-gray-500 focus-within:border-blue-gray-500">
           {
             editing && value ? <GutembergPopoverEditing tag={tag} id={id} downDisabled={downDisabled} upDisabled={upDisabled} handlerEdition={handlerEdition} orderBlock={orderBlock} /> : null
           }

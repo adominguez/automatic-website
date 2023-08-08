@@ -24,7 +24,7 @@ const GutembergPopover = ({selection, handlerChangeType}) => {
       <PlusSmall />
     </Button>
   </PopoverHandler>
-  <PopoverContent>
+  <PopoverContent className='bg-blue-gray-50'>
     <div className="grid grid-cols-3 gap-4">
       {
         Object.values(TYPES_OF_CONTENT)?.map(({ initialSelected, icon, label }) => (
