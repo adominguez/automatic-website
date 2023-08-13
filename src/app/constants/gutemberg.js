@@ -19,6 +19,7 @@ export const TYPE_BY_TAG = {
 
 export const TYPES_OF_CONTENT = {
   heading: {
+    value: 'heading',
     label: 'Encabezado',
     types: [
       { label: 'h1', tag: 'h1' },
@@ -41,6 +42,7 @@ export const TYPES_OF_CONTENT = {
     icon: <Bookmark />,
   },
   content: {
+    value: 'content',
     label: 'Contenido',
     initialSelected: { label: 'párrafo', tag: 'p', value: '' },
     editingButtons: [{
@@ -74,6 +76,7 @@ export const TYPES_OF_CONTENT = {
     icon: <Content />
   },
   list: {
+    value: 'list',
     label: 'Listado',
     initialSelected: { label: 'desordenada', tag: 'ul', value: '<li></li>' },
     types: [
@@ -83,9 +86,16 @@ export const TYPES_OF_CONTENT = {
     icon: <List />
   },
   Separator: {
+    value: 'separator',
     label: 'Separador',
     initialSelected: {tag: 'hr'},
     icon: <Separator />
+  },
+  image: {
+    value: 'image',
+    label: 'Imagen',
+    initialSelected: {tag: 'img'},
+    icon: <Picture />
   }
 }
 

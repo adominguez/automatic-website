@@ -1,4 +1,6 @@
+'use client'
 import { useState } from 'react'
+import { CldUploadWidget } from 'next-cloudinary';
 import { TYPES_OF_CONTENT, TYPE_BY_TAG } from "../constants/gutemberg"
 import { UpButton, DownButton } from '@/app/components/Icons'
 import { v4 as uuidv4 } from 'uuid';
@@ -10,11 +12,11 @@ const GutembergPopoverEditing = ({ tag, id, downDisabled, upDisabled, handlerEdi
   const [openedLink, setOpenedLink] = useState(false)
   const [range, setRange] = useState(undefined)
   const handlerButton = (type, tagName) => {
-    handlerEdition({type, id, tagName})
+    handlerEdition({ type, id, tagName })
   }
 
   const handlderChangeLink = (link) => {
-    handlerEdition({type: 'link', id, tagName: 'a', link, range})
+    handlerEdition({ type: 'link', id, tagName: 'a', link, range })
     setOpenedLink(false)
   }
 
@@ -27,6 +29,13 @@ const GutembergPopoverEditing = ({ tag, id, downDisabled, upDisabled, handlerEdi
       setRange(undefined)
     }
     setOpenedLink(opened)
+  }
+
+  const loadImages = async(e) => {
+    e.preventDefault()
+    const res = await fetch(`../../api/images`)
+    const { resources, next_cursor} = await res.json();
+    debugger
   }
 
   const buttons = TYPES_OF_CONTENT[TYPE_BY_TAG[tag]]?.editingButtons
@@ -57,8 +66,21 @@ const GutembergPopoverEditing = ({ tag, id, downDisabled, upDisabled, handlerEdi
           </PopoverContent>
         </Popover> : null
       }
-      <Button color="blue-gray" type="text" key={uuidv4()} variant="text" size="sm" className="flex items-center justify-center px-1 py-1 rounded-full w-9 h-9" onClick={() => handlerButton(type, tagName)}>
-        {buttons?.find(item => item.type === 'picture')?.icon}
+      <CldUploadWidget>
+        {({ open, }) => {
+          function handleOnClick(e) {
+            e.preventDefault();
+            open();
+          }
+          return (
+            <Button color="blue-gray" type="text" key={uuidv4()} variant="text" size="sm" className="flex items-center justify-center px-1 py-1 rounded-full w-9 h-9" onClick={handleOnClick}>
+              {buttons?.find(item => item.type === 'picture')?.icon}
+            </Button>
+          );
+        }}
+      </CldUploadWidget>
+      <Button onClick={loadImages}>
+        load images
       </Button>
     </div>
   )

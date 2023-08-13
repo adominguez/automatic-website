@@ -21,8 +21,16 @@ import {
   Popover,
   PopoverHandler,
   PopoverContent,
+  Progress,
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+  Tooltip,
   Switch,
-  Checkbox
+  Checkbox,
+  Spinner
 } from "@material-tailwind/react";
 
 export { Button,
@@ -46,6 +54,14 @@ export { Button,
   Popover,
   PopoverHandler,
   PopoverContent,
+  Progress,
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+  Tooltip,
   Switch,
-  Checkbox
+  Checkbox,
+  Spinner
 };
