@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Header from './AdminHeader'
 import { ADMIN_ROUTES } from '../constants/routes'
 import { usePathname } from 'next/navigation';
-import useScrollTop from '../hooks/scroll';
+import { useScrollTop } from '../hooks/scroll';
 
 
 const totalRoutes = Object.values(ADMIN_ROUTES).map(item => item.routes).flat();
