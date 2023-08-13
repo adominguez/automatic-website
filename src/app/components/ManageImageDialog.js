@@ -1,53 +1,24 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import {
-  Dialog, DialogHeader, DialogBody, DialogFooter, Button, IconButton, Tabs, TabsHeader, TabsBody, Tab, TabPanel, Typography
+  Dialog, DialogHeader, DialogBody, DialogFooter, Button, IconButton, Tabs, TabsHeader, TabsBody, Tab, TabPanel, Typography, Spinner
 } from '@/app/components/MaterialComponents'
 import { Close } from '@/app/components/Icons'
 // import ManageImageDropzone from './ManageImageDropzone'
 import ManageImageDrop from './ManageImageDrop'
 import ManageImageList from './ManageImageList'
 import ManageImageDetail from './ManageImageDetail'
+import useFetchImages from '../hooks/FetchImages'
+import { MANAGE_IMAGE_TABS } from '../constants/ManageImage'
 
-const MANAGE_IMAGE_TABS = [
-  {
-    label: "Subir archivos",
-    value: "upload",
-    data: 'Subir archivos',
-  },
-  {
-    label: "Medios",
-    value: "medios",
-  },
-];
-
-const ManageImageDialog = ({ children }) => {
+const ManageImageDialog = ({ children, maxResults }) => {
   const [open, setOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("upload");
-  const [images, setImages] = useState([])
   const [selectedImages, setSelectedImages] = useState([])
   const [selectedImage] = selectedImages?.slice(-1)
-  const [loadingImages, setLoadingImages] = useState(false)
-  const [nextCursor, setNextCursor] = useState(undefined)
   const tabRef = useRef(null)
   const {current} = tabRef || {}
-
-  const fetchImages = async () => {
-    const { data } = await fetch(`../../api/images`).then((res) => res.json());
-    setImages(data.resources)
-    setNextCursor(data.next_cursor)
-  }
-
-  const loadImages = () => {
-    setLoadingImages(true)
-    fetchImages().catch(console.error).finally(() => setLoadingImages(false));
-  }
-
-  useEffect(() => {
-    if (activeTab === MANAGE_IMAGE_TABS[1].value && !images?.length) {
-      loadImages()
-    }
-  }, [activeTab])
+  const { images, loadingImages, loadingMoreImages, resetImages } = useFetchImages({current, activeTab, maxResults})
 
   const selectImages = (newSelectedImages) => {
     setSelectedImages(newSelectedImages)
@@ -56,7 +27,7 @@ const ManageImageDialog = ({ children }) => {
   const handleOpen = () => {
     if (open) {
       setSelectedImages([])
-      setImages([])
+      resetImages()
       setActiveTab('upload')
     }
     setOpen(!open)
@@ -105,7 +76,12 @@ const ManageImageDialog = ({ children }) => {
                         value === 'upload' ? <ManageImageDrop onSelectImages={selectImages} /> : null
                       }
                       {
-                        value === 'medios' ? <ManageImageList images={images} loadingImages={loadingImages} onSelectImages={selectImages} /> : null
+                        value === 'medios' ? <>
+                          <ManageImageList images={images} loadingImages={loadingImages} onSelectImages={selectImages} />
+                          {
+                            loadingMoreImages ? <Spinner /> : null
+                          }
+                        </> : null
                       }
                     </TabPanel>
                   ))}
