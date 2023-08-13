@@ -12,3 +12,7 @@
   --background: black;
   --foreground: white;
 }
+
+.scroll-gutter {
+  scrollbar-gutter: stable both-edges;
+}
