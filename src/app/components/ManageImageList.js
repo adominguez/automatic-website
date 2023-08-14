@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Progress, Checkbox, Button } from '@/app/components/MaterialComponents'
+import { Progress, Checkbox, Button, Typography } from '@/app/components/MaterialComponents'
+import { EmptyFolder } from '@/app/components/Icons'
 import { v4 as uuidv4 } from 'uuid';
 
-const ManageImageList = ({ images, uploading, loadingImages, uploadProgress, onSelectImages, multipleSelection }) => {
+const ManageImageList = ({ images, uploading, loadingImages, isEmpty, uploadProgress, onSelectImages, multipleSelection }) => {
   const [selectedImages, setSelectedImages] = useState([])
 
   const handleCheckboxChange = (e, id) => {
@@ -20,12 +21,12 @@ const ManageImageList = ({ images, uploading, loadingImages, uploadProgress, onS
 
   const isSelected = (id) => selectedImages.some(({ public_id }) => public_id === id)
 
-  const loadImagesArray = new Array(12).fill().map(() => uuidv4())
+  const loadImagesArray = new Array(24).fill().map(() => uuidv4())
 
   return (
     <div>
       {loadingImages ?
-        <div className="grid grid-cols-1 gap-3 my-4 grid-auto-flow sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 my-4 grid-auto-flow sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
           {
             loadImagesArray.map(id => <div role="status" key={id} className="flex flex-col items-center justify-center h-full gap-2 animate-pulse min-h-max">
               <div className="flex items-center justify-center flex-1 w-full p-20 bg-gray-300 rounded dark:bg-gray-700">
@@ -52,7 +53,7 @@ const ManageImageList = ({ images, uploading, loadingImages, uploadProgress, onS
               </div>
             : null
           }
-          <ul className="grid grid-cols-1 gap-3 my-4 grid-auto-flow sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <ul className="grid grid-cols-1 gap-3 my-4 grid-auto-flow sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
             {
               images.map(({ secure_url, public_id }, index) => (
                 <li className='relative' key={public_id}>
@@ -88,6 +89,13 @@ const ManageImageList = ({ images, uploading, loadingImages, uploadProgress, onS
           </ul>
         </>
         : null}
+        {
+          isEmpty ? <div className='flex flex-col items-center justify-center flex-1 w-full gap-4 py-20 text-center px-36 text-blue-gray-400'>
+            <div className='w-32'>
+              <EmptyFolder />
+            </div>
+            <Typography variant="h3">Todavía no tienes imágenes subidas, puedes comenzar subiendo una nueva</Typography></div> : null
+        }
     </div>
   )
 }

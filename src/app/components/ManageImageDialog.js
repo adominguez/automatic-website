@@ -17,8 +17,8 @@ const ManageImageDialog = ({ children, maxResults }) => {
   const [selectedImages, setSelectedImages] = useState([])
   const [selectedImage] = selectedImages?.slice(-1)
   const tabRef = useRef(null)
-  const {current} = tabRef || {}
-  const { images, loadingImages, loadingMoreImages, resetImages } = useFetchImages({current, activeTab, maxResults})
+  const { current } = tabRef || {}
+  const { images, loadingImages, loadingMoreImages, nextCursor, isEmpty, resetImages, loadMoreImages } = useFetchImages({ current, activeTab, maxResults })
 
   const selectImages = (newSelectedImages) => {
     setSelectedImages(newSelectedImages)
@@ -32,6 +32,8 @@ const ManageImageDialog = ({ children, maxResults }) => {
     }
     setOpen(!open)
   };
+
+  const showButtonMore = () => images?.length && nextCursor && (current.clientHeight > current?.firstChild?.clientHeight)
 
   return (
     <>
@@ -77,7 +79,12 @@ const ManageImageDialog = ({ children, maxResults }) => {
                       }
                       {
                         value === 'medios' ? <>
-                          <ManageImageList images={images} loadingImages={loadingImages} onSelectImages={selectImages} />
+                          <ManageImageList images={images} isEmpty={isEmpty} loadingImages={loadingImages} onSelectImages={selectImages} />
+                          {
+                            showButtonMore() ? <div className='flex items-center justify-center mt-4'>
+                              <Button color="blue-gray" onClick={() => loadMoreImages()} >Cargar más imágenes</Button>
+                            </div> : null
+                          }
                           {
                             loadingMoreImages ? <Spinner /> : null
                           }
@@ -88,11 +95,9 @@ const ManageImageDialog = ({ children, maxResults }) => {
                 </TabsBody>
               </Tabs>
             </div>
-            {
-              activeTab === 'medios' ? <div className='hidden w-0 p-2 overflow-auto sm:block sm:border-l sm:w-60 border-blue-gray-100'>
-                <ManageImageDetail selectedImage={selectedImage} />
-              </div> : null
-            }
+            <div className={`hidden w-0 p-2 overflow-auto sm:block sm:border-l transition-opacity ${selectedImage ? 'sm:w-80 border-blue-gray-100 opacity-100' : 'sm:w-0 border-transparent opacity-0' }`}>
+              <ManageImageDetail selectedImage={selectedImage} />
+            </div>
           </div>
         </DialogBody>
         <DialogFooter>
