@@ -38,9 +38,12 @@ const ManageImageDrop = ({onSelectImages}) => {
 
   const uploadFile = async (file, index) => {
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
+    const folder = 'mi-carpeta'
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+    formData.append('folder', folder);
+    formData.append('context', JSON.stringify({ alt: file.name, public_id: `folder/${file.name}` }));
 
     try {
       const response = await fetch(url, {
