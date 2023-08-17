@@ -9,7 +9,7 @@ export const useFetchApi = ({ endpoint }) => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const { data, meta } = await fetch(`${process.env.REQUEST_API_URL}/${endpoint}`).then(res => res.json());
+      const { data, meta } = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/${endpoint}`).then(res => res.json());
       if (!data?.length) {
         setEmpty(true);
         setResponse([]);
