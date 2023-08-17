@@ -94,7 +94,7 @@ const ManageImageList = ({ images, uploading, loadingImages, isEmpty, uploadProg
             <div className='w-32'>
               <EmptyFolder />
             </div>
-            <Typography variant="h3">Todavía no tienes imágenes subidas, puedes comenzar subiendo una nueva</Typography></div> : null
+            <Typography variant="h3" className="balance">Todavía no tienes imágenes subidas, puedes comenzar subiendo una nueva</Typography></div> : null
         }
     </div>
   )

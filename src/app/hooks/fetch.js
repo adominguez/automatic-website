@@ -7,6 +7,8 @@ export const useFetchApi = ({ endpoint }) => {
   const [isEmpty, setEmpty] = useState(false);
 
   const loadData = async () => {
+    setEmpty(false);
+    setError(false);
     setLoading(true);
     try {
       const { data, meta } = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/${endpoint}`).then(res => res.json());

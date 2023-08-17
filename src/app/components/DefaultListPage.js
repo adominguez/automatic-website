@@ -28,10 +28,12 @@ const DefaultListPage = ({ type: defaultType = TYPES[1], endpoint }) => {
       }
       {
         isEmpty ? <div className='flex flex-col items-center justify-center p-20'>
-          <Typography variant="h3">
-            No se han encontrado datos
+          <div className='w-32'>
+            <EmptyData />
+          </div>
+          <Typography variant="h3" className="balance">
+            Hemos buscado y todavía no tienes datos
           </Typography>
-          <EmptyData />
         </div> : null
       }
       {
