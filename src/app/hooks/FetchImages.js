@@ -10,7 +10,7 @@ const useFetchImages = ({current, activeTab, maxResults}) => {
   const [nextCursor, setNextCursor] = useState(false)
 
   const fetchImages = async () => {
-    const { data } = await fetch(`../../api/images?max_results=${maxResults || 24}${nextCursor ? `&next_cursor=${nextCursor}` : ''}`).then((res) => res.json());
+    const { data } = await fetch(`${process.env.REQUEST_API_URL}/images?max_results=${maxResults || 24}${nextCursor ? `&next_cursor=${nextCursor}` : ''}`).then((res) => res.json());
     if (!data?.resources?.length) {
       setEmpty(true)
     } else {
