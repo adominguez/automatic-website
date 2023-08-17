@@ -1,4 +1,4 @@
-import DefaultListPage from "@/app/components/defaultListPage"
+import DefaultListPage from "@/app/components/DefaultListPage"
 const endpoint = 'sites'
 
 const Sites = async () => {
