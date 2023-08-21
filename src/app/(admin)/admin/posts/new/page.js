@@ -4,7 +4,7 @@ import PostSkeleton from '@/app/components/PostSkeleton'
 import { Input, Typography, Button, Card } from '@/app/components/MaterialComponents'
 import dynamic from 'next/dynamic'
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false, loading: () => <p>Loading ...</p>, });
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false, loading: () => <p>Loading ...</p> })
 
 const modules = {
   toolbar: [
@@ -15,15 +15,15 @@ const modules = {
       { list: 'ordered' },
       { list: 'bullet' },
       { indent: '-1' },
-      { indent: '+1' },
+      { indent: '+1' }
     ],
     ['link', 'image', 'video'],
-    ['clean'],
+    ['clean']
   ],
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:
-    matchVisual: false,
-  },
+    matchVisual: false
+  }
 }
 
 const formats = [
@@ -40,7 +40,7 @@ const formats = [
   'indent',
   'link',
   'image',
-  'video',
+  'video'
 ]
 
 const NewPost = () => {
@@ -50,7 +50,7 @@ const NewPost = () => {
   const markup = { __html: data }
 
   const changeKeyword = (e) => {
-    setKeyword(e.target.value);
+    setKeyword(e.target.value)
   }
 
   const onSubmitHandler = async (event) => {
@@ -58,15 +58,15 @@ const NewPost = () => {
     setData('')
     setLoading(true)
     const res = await fetch(`../../../api/new-post/${keyword}`)
-    const response = await res.json();
+    const response = await res.json()
     console.log(response)
     setData(response.data)
     setLoading(false)
   }
 
   const handleProcedureContentChange = (content, delta, source, editor) => {
-    setData(content);
-  };
+    setData(content)
+  }
 
   return (
     <Card color="white" shadow={false} className='p-6 text-center'>
@@ -84,13 +84,15 @@ const NewPost = () => {
       </form>
       {loading ? <PostSkeleton /> : null }
       {
-        data ? <ReactQuill
+        data
+          ? <ReactQuill
           modules={modules}
           formats={formats}
           theme="snow"
           value={data}
           onChange={handleProcedureContentChange}
-        /> : null
+        />
+          : null
       }
     </Card>
   )

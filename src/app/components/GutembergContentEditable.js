@@ -1,9 +1,9 @@
-import { createElement, forwardRef, useState } from 'react'
+import { createElement, forwardRef } from 'react'
 import ContentEditable from 'react-contenteditable'
 import { ariaByTag, classByTag } from '@/app/constants/gutemberg'
-import { isList } from '../libs/clipboard';
+import { isList } from '../libs/clipboard'
 
-const getClassName = (value, tag) => `default-field ${classByTag[tag]} ${value?.length ? `opacity-100` : 'opacity-50'}`
+const getClassName = (value, tag) => `default-field ${classByTag[tag]} ${value?.length ? 'opacity-100' : 'opacity-50'}`
 
 const tagNameByTag = {
   hr: 'div'
@@ -13,18 +13,17 @@ const valueByTag = {
   hr: '<hr />'
 }
 
-const GutembergContentEditable = forwardRef(function GutembergContentEditable({ value, id, tag, onChange, onKeyDown, onPaste, onFocus }, ref) {
-
+const GutembergContentEditable = forwardRef(function GutembergContentEditable ({ value, id, tag, onChange, onKeyDown, onPaste, onFocus }, ref) {
   const getTotalListValues = () => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(value, 'text/html');
-    return Array.from(doc.body.querySelectorAll('li'));
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(value, 'text/html')
+    return Array.from(doc.body.querySelectorAll('li'))
   }
 
   return (
     <>
-      {isList(tag) ?
-        createElement(
+      {isList(tag)
+        ? createElement(
           tag,
           {
             ref, className: 'flex flex-col flex-1 list-disc', id
@@ -55,7 +54,7 @@ const GutembergContentEditable = forwardRef(function GutembergContentEditable({ 
           onPaste={(event) => onPaste(event, id)}
         />}
     </>
-  );
-});
+  )
+})
 
 export default GutembergContentEditable

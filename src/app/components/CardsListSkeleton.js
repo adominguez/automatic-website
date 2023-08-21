@@ -1,9 +1,9 @@
 'useClient'
-import useIsMobile from "../hooks/mobile"
+import useIsMobile from '../hooks/mobile'
 
 const CardsListSkeleton = () => {
-  const isMobile = useIsMobile();
-  const length = isMobile ? 4 : 6;
+  const isMobile = useIsMobile()
+  const length = isMobile ? 4 : 6
 
   const loadImagesArray = new Array(parseInt(length) || 24).fill().map(() => crypto.randomUUID())
 
@@ -30,6 +30,7 @@ const CardsListSkeleton = () => {
       ))
     }
   </section>
-)}
+  )
+}
 
 export default CardsListSkeleton

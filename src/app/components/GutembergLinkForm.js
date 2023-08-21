@@ -11,7 +11,7 @@ const GutembergLinkForm = ({ handlderChangeLink, range }) => {
     newTab: false,
     noFollow: false,
     sponsored: false,
-    isSelectedText: range?.toString() || false,
+    isSelectedText: range?.toString() || false
   })
 
   const isDisabled = !link.textLink || !link.url || !regexLink.test(link.url)
@@ -21,8 +21,8 @@ const GutembergLinkForm = ({ handlderChangeLink, range }) => {
     setLink({
       ...link,
       [id]: checked || value
-    });
-  };
+    })
+  }
 
   const onSubmitHandler = (event) => {
     event.preventDefault()

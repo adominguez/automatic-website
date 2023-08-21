@@ -1,10 +1,10 @@
 import { Bookmark, Content, List, Bold, Italic, Underline, Separator, Url, Picture } from '@/app/components/Icons'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 export const INITIAL_BLOCKS = [
   { tag: 'h1', id: uuidv4(), value: '', order: 0, downDisabled: true, upDisabled: true },
-  { tag: 'p', id: uuidv4(), value: '', order: 1, downDisabled: false, upDisabled: true },
-];
+  { tag: 'p', id: uuidv4(), value: '', order: 1, downDisabled: false, upDisabled: true }
+]
 
 export const TYPE_BY_TAG = {
   h1: 'heading',
@@ -27,7 +27,7 @@ export const TYPES_OF_CONTENT = {
       { label: 'h3', tag: 'h3' },
       { label: 'h4', tag: 'h4' },
       { label: 'h5', tag: 'h5' },
-      { label: 'h6', tag: 'h6' },
+      { label: 'h6', tag: 'h6' }
     ],
     editingButtons: [{
       icon: <Bookmark />,
@@ -39,7 +39,7 @@ export const TYPES_OF_CONTENT = {
       tagName: 'b'
     }],
     initialSelected: { label: 'h2', tag: 'h2', value: '' },
-    icon: <Bookmark />,
+    icon: <Bookmark />
   },
   content: {
     value: 'content',
@@ -71,7 +71,7 @@ export const TYPES_OF_CONTENT = {
     }],
     types: [
       { label: 'párrafo', tag: 'p' },
-      { label: 'span', tag: 'span' },
+      { label: 'span', tag: 'span' }
     ],
     icon: <Content />
   },
@@ -88,13 +88,13 @@ export const TYPES_OF_CONTENT = {
   Separator: {
     value: 'separator',
     label: 'Separador',
-    initialSelected: {tag: 'hr'},
+    initialSelected: { tag: 'hr' },
     icon: <Separator />
   },
   image: {
     value: 'image',
     label: 'Imagen',
-    initialSelected: {tag: 'img'},
+    initialSelected: { tag: 'img' },
     icon: <Picture />
   }
 }

@@ -18,7 +18,7 @@ const KeywordsPage = () => {
     setLoading(true)
     setKeywordList(null)
     const res = await fetch(`../api/search-keyword/${keyword}`)
-    const { newKeywords } = await res.json();
+    const { newKeywords } = await res.json()
     setKeywordList(newKeywords)
     setLoading(false)
   }
@@ -38,8 +38,8 @@ const KeywordsPage = () => {
       {
         loading ? <ListSkeleton /> : null
       }
-      {keywordList?.length && keyword ?
-        <>
+      {keywordList?.length && keyword
+        ? <>
           {keywordList.length}
           <List>
             {
@@ -60,4 +60,4 @@ const KeywordsPage = () => {
     </Card>)
 }
 
-export default KeywordsPage;
+export default KeywordsPage

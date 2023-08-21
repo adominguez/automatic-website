@@ -1,4 +1,4 @@
-import GutembergEditor from "@/app/components/GutembergEditor";
+import GutembergEditor from '@/app/components/GutembergEditor'
 
 const PostPage = () => (
     <GutembergEditor />

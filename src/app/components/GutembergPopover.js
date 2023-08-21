@@ -5,7 +5,7 @@ import { Popover, PopoverHandler, PopoverContent, Button } from '@/app/component
 import ManageImageDialog from './ManageImageDialog'
 
 const GutembergPopover = ({ selection, handlerChangeType }) => {
-  const [openPopover, setOpenPopover] = useState(false);
+  const [openPopover, setOpenPopover] = useState(false)
 
   const handlerButtonSelection = (initialSelected) => {
     handlerChangeType && handlerChangeType(initialSelected, selection)
@@ -17,7 +17,7 @@ const GutembergPopover = ({ selection, handlerChangeType }) => {
     placement="left-start"
     animate={{
       mount: { scale: 1, y: 0 },
-      unmount: { scale: 0, y: 25 },
+      unmount: { scale: 0, y: 25 }
     }}
   >
     <PopoverHandler>
@@ -29,12 +29,12 @@ const GutembergPopover = ({ selection, handlerChangeType }) => {
       <div className="grid grid-cols-3 gap-4">
         {
           Object.values(TYPES_OF_CONTENT)?.map(({ initialSelected, icon, label, value }) => (
-            value === 'image' ?
-              <ManageImageDialog key={value}>
+            value === 'image'
+              ? <ManageImageDialog key={value}>
                 {({ handleOpen }) => {
-                  function handleOnClick(e) {
-                    e.preventDefault();
-                    handleOpen();
+                  function handleOnClick (e) {
+                    e.preventDefault()
+                    handleOpen()
                   }
                   return (
                     <Button color="blue-gray" type="text" variant="text" size="sm" onClick={handleOnClick}>
@@ -43,11 +43,10 @@ const GutembergPopover = ({ selection, handlerChangeType }) => {
                         <span>{TYPES_OF_CONTENT.image.label}</span>
                       </div>
                     </Button>
-                  );
+                  )
                 }}
               </ManageImageDialog>
-              :
-              <Button color="blue-gray" type="text" key={value} variant="text" size="sm" onClick={() => handlerButtonSelection(initialSelected)}>
+              : <Button color="blue-gray" type="text" key={value} variant="text" size="sm" onClick={() => handlerButtonSelection(initialSelected)}>
                 <div className="flex flex-col items-center justify-center gap-2" color="blue-gray">
                   {icon}
                   <span>{label}</span>

@@ -1,9 +1,9 @@
-import { Card, Typography, Button, CardHeader, CardBody, SpeedDial, SpeedDialHandler, SpeedDialContent, SpeedDialAction, IconButton } from '@/app/components/MaterialComponents'
-import {  EllipsisHorizontalIcon } from '@/app/components/Icons'
+import { Card, Typography, Button, CardHeader, CardBody, SpeedDial, SpeedDialHandler, SpeedDialContent, IconButton } from '@/app/components/MaterialComponents'
+import { EllipsisHorizontalIcon } from '@/app/components/Icons'
 import {
   TrashIcon,
   PencilIcon
-} from "@heroicons/react/24/outline";
+} from '@heroicons/react/24/outline'
 
 const PostItem = () => (
   <Card className="flex-col w-full max-w-[48rem] lg:flex-row relative">

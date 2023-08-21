@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { INITIAL_BLOCKS } from '@/app/constants/gutemberg'
-import { isH1, isList, getListValues } from '../libs/clipboard';
+import { isH1, isList, getListValues } from '../libs/clipboard'
 
 export const useBlocks = () => {
-  const [blocks, setBlocks] = useState([]);
+  const [blocks, setBlocks] = useState([])
 
   const getBlockFromId = (id) => blocks.find(item => item?.id === id)
 
@@ -22,15 +22,15 @@ export const useBlocks = () => {
   }
 
   const getDisabledOrder = (index) => (
-  {
-    downDisabled: index === 0 || index === blocks?.length - 1,
-    upDisabled: index === 0 || index === 1
-  })
+    {
+      downDisabled: index === 0 || index === blocks?.length - 1,
+      upDisabled: index === 0 || index === 1
+    })
 
   const createBlock = (id, newId, isTagNameList) => {
-    const newBlock = { tag: 'p', id: newId };
+    const newBlock = { tag: 'p', id: newId }
     setBlocks(oldData => oldData.reduce((acc, item, index) => {
-      const isNode = item.id === id;
+      const isNode = item.id === id
       const order = acc.some(block => block.id === newId) ? index + 1 : index
       acc.push({
         ...item,
@@ -53,7 +53,7 @@ export const useBlocks = () => {
       ...item,
       order,
       ...getDisabledOrder(order)
-    })));
+    })))
   }
 
   const removeListItem = (id, ref) => {
@@ -74,7 +74,7 @@ export const useBlocks = () => {
     if (matches.slice(-1)?.[0] === '') {
       createBlock(id, newId)
       removeListItem(id, ref)
-    }  else {
+    } else {
       updateValue(id, `${value}<li></li>`)
     }
   }
@@ -107,11 +107,11 @@ export const useBlocks = () => {
         })
       }
       return acc
-    }, []));
+    }, []))
   }
 
   const removeBlock = (id, ref) => {
-    const block = getBlockFromId(id);
+    const block = getBlockFromId(id)
     if (isList(block.tag)) {
       removeListItem(id, ref)
     } else {
@@ -131,7 +131,7 @@ export const useBlocks = () => {
     setBlocks((oldData) => oldData.map((item) => ({
       ...item,
       tag: item.id === id ? tag : item.tag,
-      value: item.id === id ? value : item.value,
+      value: item.id === id ? value : item.value
     })))
   }
 
@@ -151,16 +151,16 @@ export const useBlocks = () => {
 export const useFocus = (inputRef) => {
   const getRefFromId = (id) => inputRef.current.find(item => item?.el?.current?.id === id) ||
   inputRef.current.find(item => item?.id === id)
-  
+
   const focusElement = (id) => {
     setTimeout(() => {
-      const newElement = getRefFromId(id);
+      const newElement = getRefFromId(id)
       if (isList(newElement?.tagName)) {
         newElement.lastElementChild.focus()
       } else {
-        newElement?.el.current?.focus();
+        newElement?.el.current?.focus()
       }
-    }, 0);
+    }, 0)
   }
   return { getRefFromId, focusElement }
 }

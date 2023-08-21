@@ -1,23 +1,24 @@
-import { useState } from 'react';
+/* eslint-disable camelcase */
+import { useState } from 'react'
 import { Progress, Checkbox, Button, Typography } from '@/app/components/MaterialComponents'
 import { EmptyFolder } from '@/app/components/Icons'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 const ManageImageList = ({ images, uploading, loadingImages, isEmpty, uploadProgress, onSelectImages, multipleSelection }) => {
   const [selectedImages, setSelectedImages] = useState([])
 
   const handleCheckboxChange = (e, id) => {
     const { checked } = e.currentTarget
-    let newImages = [];
+    let newImages = []
     if (checked) {
       const image = images.find(({ public_id }) => public_id === id)
-      newImages = multipleSelection ? [...selectedImages, image]: [image]
+      newImages = multipleSelection ? [...selectedImages, image] : [image]
     } else {
       newImages = selectedImages.filter(({ public_id }) => public_id !== id)
     }
-    setSelectedImages(newImages);
+    setSelectedImages(newImages)
     onSelectImages && onSelectImages(newImages)
-  };
+  }
 
   const isSelected = (id) => selectedImages.some(({ public_id }) => public_id === id)
 
@@ -25,8 +26,8 @@ const ManageImageList = ({ images, uploading, loadingImages, isEmpty, uploadProg
 
   return (
     <div>
-      {loadingImages ?
-        <div className="grid grid-cols-1 gap-3 my-4 grid-auto-flow sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
+      {loadingImages
+        ? <div className="grid grid-cols-1 gap-3 my-4 grid-auto-flow sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
           {
             loadImagesArray.map(id => <div role="status" key={id} className="flex flex-col items-center justify-center h-full gap-2 animate-pulse min-h-max">
               <div className="flex items-center justify-center flex-1 w-full p-20 bg-gray-300 rounded dark:bg-gray-700">
@@ -39,11 +40,11 @@ const ManageImageList = ({ images, uploading, loadingImages, isEmpty, uploadProg
           }
         </div>
         : null}
-      {images?.length ?
-        <>
+      {images?.length
+        ? <>
           {
-            multipleSelection ?
-              <div className='flex justify-end gap-2'>
+            multipleSelection
+              ? <div className='flex justify-end gap-2'>
                 <Button color="blue-gray" onClick={() => setSelectedImages([])}>
                   Deseleccionar todo
                 </Button>
@@ -51,15 +52,15 @@ const ManageImageList = ({ images, uploading, loadingImages, isEmpty, uploadProg
                   Seleccionar todo
                 </Button>
               </div>
-            : null
+              : null
           }
           <ul className="grid grid-cols-1 gap-3 my-4 grid-auto-flow sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
             {
               images.map(({ secure_url, public_id }, index) => (
                 <li className='relative' key={public_id}>
                   {
-                    secure_url ?
-                      <>
+                    secure_url
+                      ? <>
                         <label className="absolute w-full h-full cursor-pointer">
                           <Checkbox
                             checked={isSelected(public_id)}
@@ -70,7 +71,8 @@ const ManageImageList = ({ images, uploading, loadingImages, isEmpty, uploadProg
                           />
                         </label>
                         <img alt={`Image ${index}`} src={secure_url} className={`object-cover aspect-square ${isSelected(public_id) ? 'p-4 border-2 border-blue-gray-800' : ''}`} />
-                      </> : null
+                      </>
+                      : null
                   }
                   {uploading && uploadProgress[index] < 100 && (
                     <div role="status" className="flex flex-col items-center justify-center h-full gap-2 animate-pulse min-h-max">
@@ -90,11 +92,13 @@ const ManageImageList = ({ images, uploading, loadingImages, isEmpty, uploadProg
         </>
         : null}
         {
-          isEmpty ? <div className='flex flex-col items-center justify-center flex-1 w-full gap-4 py-20 text-center px-36 text-blue-gray-400'>
+          isEmpty
+            ? <div className='flex flex-col items-center justify-center flex-1 w-full gap-4 py-20 text-center px-36 text-blue-gray-400'>
             <div className='w-32'>
               <EmptyFolder />
             </div>
-            <Typography variant="h3" className="balance">Todavía no tienes imágenes subidas, puedes comenzar subiendo una nueva</Typography></div> : null
+            <Typography variant="h3" className="balance">Todavía no tienes imágenes subidas, puedes comenzar subiendo una nueva</Typography></div>
+            : null
         }
     </div>
   )

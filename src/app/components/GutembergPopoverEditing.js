@@ -1,12 +1,11 @@
 'use client'
 import { useState } from 'react'
-import { CldUploadWidget } from 'next-cloudinary';
-import { TYPES_OF_CONTENT, TYPE_BY_TAG } from "../constants/gutemberg"
+import { CldUploadWidget } from 'next-cloudinary'
+import { TYPES_OF_CONTENT, TYPE_BY_TAG } from '../constants/gutemberg'
 import { UpButton, DownButton } from '@/app/components/Icons'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 import { Button, Popover, PopoverContent, PopoverHandler } from '@/app/components/MaterialComponents'
 import GutembergLinkForm from './GutembergLinkForm'
-
 
 const GutembergPopoverEditing = ({ tag, id, downDisabled, upDisabled, handlerEdition, orderBlock }) => {
   const [openedLink, setOpenedLink] = useState(false)
@@ -22,8 +21,8 @@ const GutembergPopoverEditing = ({ tag, id, downDisabled, upDisabled, handlerEdi
 
   const handlerOpenLinkPopover = (opened) => {
     if (opened) {
-      const selection = window.getSelection();
-      const newRange = selection.getRangeAt(0);
+      const selection = window.getSelection()
+      const newRange = selection.getRangeAt(0)
       setRange(newRange)
     } else {
       setRange(undefined)
@@ -31,11 +30,10 @@ const GutembergPopoverEditing = ({ tag, id, downDisabled, upDisabled, handlerEdi
     setOpenedLink(opened)
   }
 
-  const loadImages = async(e) => {
+  const loadImages = async (e) => {
     e.preventDefault()
-    const res = await fetch(`../../api/images`)
-    const { resources, next_cursor} = await res.json();
-    debugger
+    const res = await fetch('../../api/images')
+    const { resources, next_cursor } = await res.json()
   }
 
   const buttons = TYPES_OF_CONTENT[TYPE_BY_TAG[tag]]?.editingButtons
@@ -55,7 +53,8 @@ const GutembergPopoverEditing = ({ tag, id, downDisabled, upDisabled, handlerEdi
         </Button>
       ))}
       {
-        buttons?.some(item => item.type === 'link') ? <Popover open={openedLink} handler={handlerOpenLinkPopover} placement="bottom" offset={20}>
+        buttons?.some(item => item.type === 'link')
+          ? <Popover open={openedLink} handler={handlerOpenLinkPopover} placement="bottom" offset={20}>
           <PopoverHandler>
             <Button color="blue-gray" type="text" key={uuidv4()} variant="text" size="sm" className="flex items-center justify-center px-1 py-1 rounded-full w-9 h-9">
               {buttons?.find(item => item.type === 'link')?.icon}
@@ -64,19 +63,20 @@ const GutembergPopoverEditing = ({ tag, id, downDisabled, upDisabled, handlerEdi
           <PopoverContent className="popover-content w-96 bg-blue-gray-50">
             <GutembergLinkForm range={range} handlderChangeLink={handlderChangeLink} />
           </PopoverContent>
-        </Popover> : null
+        </Popover>
+          : null
       }
       <CldUploadWidget>
-        {({ open, }) => {
-          function handleOnClick(e) {
-            e.preventDefault();
-            open();
+        {({ open }) => {
+          function handleOnClick (e) {
+            e.preventDefault()
+            open()
           }
           return (
             <Button color="blue-gray" type="text" key={uuidv4()} variant="text" size="sm" className="flex items-center justify-center px-1 py-1 rounded-full w-9 h-9" onClick={handleOnClick}>
               {buttons?.find(item => item.type === 'picture')?.icon}
             </Button>
-          );
+          )
         }}
       </CldUploadWidget>
       <Button onClick={loadImages}>
