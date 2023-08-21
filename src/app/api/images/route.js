@@ -1,11 +1,11 @@
-// 'use client'
 import { NextResponse } from 'next/server'
+import { NEXT_PUBLIC_BACK_API_URL } from '@/app/config'
 
-export async function GET(request) {
-  const searchParams = request.nextUrl.searchParams;
+export async function GET (request) {
+  const searchParams = request.nextUrl.searchParams
   const maxResults = searchParams.get('max_results')
   const nextCursor = searchParams.get('next_cursor')
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_API_URL}/getimages?max_results=${maxResults || '24'}${nextCursor ? `&next_cursor=${nextCursor}` : ''}`);
-  const data = await res.json();
-  return NextResponse.json(data);
+  const res = await fetch(`${NEXT_PUBLIC_BACK_API_URL}/getimages?max_results=${maxResults || '24'}${nextCursor ? `&next_cursor=${nextCursor}` : ''}`)
+  const data = await res.json()
+  return NextResponse.json(data)
 }

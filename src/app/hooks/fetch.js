@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { NEXT_PUBLIC_REQUEST_API_URL } from '@/app/config'
 
 export const useFetchApi = ({ endpoint }) => {
   const [response, setResponse] = useState(undefined)
@@ -12,7 +13,7 @@ export const useFetchApi = ({ endpoint }) => {
     setResponse(undefined)
     setLoading(true)
     try {
-      const { data, meta } = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/${endpoint}`).then(res => res.json())
+      const { data, meta } = await fetch(`${NEXT_PUBLIC_REQUEST_API_URL}/${endpoint}`).then(res => res.json())
       if (!data?.length) {
         setEmpty(true)
         setResponse([])
