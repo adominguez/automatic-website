@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import {
   Avatar,
   Button,
@@ -32,9 +32,10 @@ import {
   Switch,
   Checkbox,
   Spinner
-} from "@material-tailwind/react";
+} from '@material-tailwind/react'
 
-export {Avatar, Button,
+export {
+  Avatar, Button,
   Input,
   Typography,
   Card,
@@ -65,4 +66,4 @@ export {Avatar, Button,
   Switch,
   Checkbox,
   Spinner
-};
+}

@@ -1,87 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Typography
 } from '@/app/components/MaterialComponents'
-import ManageImageList from './ManageImageList';
+import ManageImageList from './ManageImageList'
 
-const ManageImageDrop = ({onSelectImages}) => {
-  const [images, setImages] = useState([]);
-  const [uploadProgress, setUploadProgress] = useState([]);
-  const [uploading, setUploading] = useState(false);
-  const [dragging, setDragging] = useState(false);
+const ManageImageDrop = ({ onSelectImages }) => {
+  const [images, setImages] = useState([])
+  const [uploadProgress, setUploadProgress] = useState([])
+  const [uploading, setUploading] = useState(false)
+  const [dragging, setDragging] = useState(false)
 
   const handleDrop = (e) => {
-    e.preventDefault();
-    setDragging(false);
-    const files = e.dataTransfer.files;
-    handleFiles(files);
-  };
+    e.preventDefault()
+    setDragging(false)
+    const files = e.dataTransfer.files
+    handleFiles(files)
+  }
 
   const handleFileChange = (e) => {
-    const files = e.target.files;
-    handleFiles(files);
-  };
+    const files = e.target.files
+    handleFiles(files)
+  }
 
   const handleFiles = (files) => {
-    const newImages = [...images];
-    const newUploadProgress = [...uploadProgress];
+    const newImages = [...images]
+    const newUploadProgress = [...uploadProgress]
 
     for (let i = 0; i < files.length; i++) {
-      newImages.push({ file: files[i] });
-      newUploadProgress.push(0);
+      newImages.push({ file: files[i] })
+      newUploadProgress.push(0)
     }
 
-    setImages(newImages);
-    setUploadProgress(newUploadProgress);
-    startUpload(newImages);
-  };
+    setImages(newImages)
+    setUploadProgress(newUploadProgress)
+    startUpload(newImages)
+  }
 
   const uploadFile = async (file, index) => {
-    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
     const folder = 'mi-carpeta'
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
-    formData.append('folder', folder);
-    formData.append('context', JSON.stringify({ alt: file.name, public_id: `folder/${file.name}` }));
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET)
+    formData.append('folder', folder)
+    formData.append('context', JSON.stringify({ alt: file.name, public_id: `folder/${file.name}` }))
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         body: formData,
         onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          const newUploadProgress = [...uploadProgress];
-          newUploadProgress[index] = percentCompleted;
-          setUploadProgress(newUploadProgress);
-        },
-      });
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          const newUploadProgress = [...uploadProgress]
+          newUploadProgress[index] = percentCompleted
+          setUploadProgress(newUploadProgress)
+        }
+      })
 
-      const imageCreated = await response.json();
+      const imageCreated = await response.json()
       setImages((oldImages) => oldImages.map((item, i) => ({
-        ...(index === i ? imageCreated : item),
-      })));
+        ...(index === i ? imageCreated : item)
+      })))
 
-      const newUploadProgress = [...uploadProgress];
-      newUploadProgress[index] = 100;
-      setUploadProgress(newUploadProgress);
+      const newUploadProgress = [...uploadProgress]
+      newUploadProgress[index] = 100
+      setUploadProgress(newUploadProgress)
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error uploading image:', error)
     }
-  };
+  }
 
   const startUpload = async (newImages) => {
-    setUploading(true);
+    setUploading(true)
     for (let i = 0; i < newImages.length; i++) {
-      await uploadFile(newImages[i].file, i);
+      await uploadFile(newImages[i].file, i)
     }
-    setUploading(false);
-  };
+    setUploading(false)
+  }
 
   const clearImages = () => {
-    setImages([]);
-    setUploadProgress([]);
-  };
+    setImages([])
+    setUploadProgress([])
+  }
 
   return (
     <div className="p-4">
@@ -89,8 +89,8 @@ const ManageImageDrop = ({onSelectImages}) => {
         id="drop-area"
         onDrop={handleDrop}
         onDragOver={(e) => {
-          e.preventDefault();
-          setDragging(true);
+          e.preventDefault()
+          setDragging(true)
         }}
         onDragLeave={() => setDragging(false)}
         className={`border-2 border-dashed ${dragging ? 'border-blue-gray-800 bg-blue-gray-200' : 'border-blue-gray-400'} p-8 text-center cursor-pointer relative transition-colors duration-300 flex flex-col justify-center items-center gap-4`}
@@ -118,7 +118,7 @@ const ManageImageDrop = ({onSelectImages}) => {
         </button>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ManageImageDrop;
+export default ManageImageDrop

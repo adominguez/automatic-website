@@ -1,35 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
 export const useFetchApi = ({ endpoint }) => {
-  const [response, setResponse] = useState(undefined);
-  const [error, setError] = useState(undefined);
-  const [loading, setLoading] = useState(false);
-  const [isEmpty, setEmpty] = useState(false);
+  const [response, setResponse] = useState(undefined)
+  const [error, setError] = useState(undefined)
+  const [loading, setLoading] = useState(false)
+  const [isEmpty, setEmpty] = useState(false)
 
   const loadData = async () => {
-    setEmpty(false);
-    setError(false);
+    setEmpty(false)
+    setError(false)
     setResponse(undefined)
-    setLoading(true);
+    setLoading(true)
     try {
-      const { data, meta } = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/${endpoint}`).then(res => res.json());
+      const { data, meta } = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/${endpoint}`).then(res => res.json())
       if (!data?.length) {
-        setEmpty(true);
-        setResponse([]);
+        setEmpty(true)
+        setResponse([])
       } else {
-        setEmpty(false);
-        setResponse({ data, meta });
+        setEmpty(false)
+        setResponse({ data, meta })
       }
     } catch (e) {
-      setError(e);
+      setError(e)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    loadData();
-  }, []);
+    loadData()
+  }, [])
 
-  return { response, error, loading, isEmpty, loadData };
-};
+  return { response, error, loading, isEmpty, loadData }
+}

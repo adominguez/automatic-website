@@ -1,9 +1,9 @@
 'use client'
 import { useState } from 'react'
-import { IconButton, SpeedDial } from "@/app/components/MaterialComponents"
-import { Plus } from "@/app/components/Icons"
-import PostItem from "@/app/components/PostItem"
-import CardsListSkeleton from "@/app/components/CardsListSkeleton"
+import { IconButton, SpeedDial } from '@/app/components/MaterialComponents'
+import { Plus } from '@/app/components/Icons'
+import PostItem from '@/app/components/PostItem'
+import CardsListSkeleton from '@/app/components/CardsListSkeleton'
 import Link from 'next/link'
 
 const Posts = () => {
@@ -20,8 +20,9 @@ const Posts = () => {
         </SpeedDial>
       </div>
       {
-        loading ? <CardsListSkeleton /> :
-          <section className="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3">
+        loading
+          ? <CardsListSkeleton />
+          : <section className="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3">
             <PostItem />
           </section>
       }
