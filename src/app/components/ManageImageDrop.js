@@ -3,7 +3,6 @@ import {
   Typography
 } from '@/app/components/MaterialComponents'
 import ManageImageList from './ManageImageList'
-import { NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET } from '@/app/config'
 
 const ManageImageDrop = ({ onSelectImages }) => {
   const [images, setImages] = useState([])
@@ -38,11 +37,11 @@ const ManageImageDrop = ({ onSelectImages }) => {
   }
 
   const uploadFile = async (file, index) => {
-    const url = `https://api.cloudinary.com/v1_1/${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
     const folder = 'mi-carpeta'
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('upload_preset', NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET)
+    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET)
     formData.append('folder', folder)
     formData.append('context', JSON.stringify({ alt: file.name, public_id: `folder/${file.name}` }))
 

@@ -1,6 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
 import { MANAGE_IMAGE_TABS } from '../constants/ManageImage'
-import { NEXT_PUBLIC_REQUEST_API_URL } from '@/app/config'
 
 let loadingMoreImages = false
 
@@ -11,7 +10,7 @@ const useFetchImages = ({ current, activeTab, maxResults }) => {
   const [nextCursor, setNextCursor] = useState(false)
 
   const fetchImages = async () => {
-    const { data } = await fetch(`${NEXT_PUBLIC_REQUEST_API_URL}/images?max_results=${maxResults || 24}${nextCursor ? `&next_cursor=${nextCursor}` : ''}`).then((res) => res.json())
+    const { data } = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/images?max_results=${maxResults || 24}${nextCursor ? `&next_cursor=${nextCursor}` : ''}`).then((res) => res.json())
     if (!data?.resources?.length) {
       setEmpty(true)
     } else {
