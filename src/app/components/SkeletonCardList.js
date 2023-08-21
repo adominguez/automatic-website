@@ -36,7 +36,7 @@ export const SkeletonCardItem = ({ type }) => (
 export const SkeletonCardList = ({ number = 24, type = TYPES[0], children, className }) => {
   const loadImagesArray = new Array(parseInt(number) || 24).fill().map(() => crypto.randomUUID())
   return (
-    <div className={`grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-4 ${className}`}>
+    <div className={`grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 ${className}`}>
       {
         loadImagesArray.map(key => (
           children ? typeof children === 'function' && children({

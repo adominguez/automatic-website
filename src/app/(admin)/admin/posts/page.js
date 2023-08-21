@@ -11,7 +11,7 @@ const Posts = () => {
   return (
     <>
       <div className="absolute bottom-3 right-3">
-        <SpeedDial>
+        <SpeedDial className="absolute bottom-3 right-3">
           <Link href="/admin/posts/new">
             <IconButton size="lg" color="blue-gray" className="rounded-full">
               {Plus}

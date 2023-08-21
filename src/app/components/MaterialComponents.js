@@ -1,5 +1,6 @@
 "use client";
 import {
+  Avatar,
   Button,
   Input,
   Typography,
@@ -33,7 +34,7 @@ import {
   Spinner
 } from "@material-tailwind/react";
 
-export { Button,
+export {Avatar, Button,
   Input,
   Typography,
   Card,
