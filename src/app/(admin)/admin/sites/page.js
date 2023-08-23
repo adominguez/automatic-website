@@ -4,7 +4,7 @@ import SiteItem from '@/app/components/SiteItem'
 import { IconButton, SpeedDial } from '@/app/components/MaterialComponents'
 import { Plus } from '@/app/components/Icons'
 import Link from 'next/link'
-const endpoint = 'sites'
+const endpoint = 'sites-by-user'
 
 const Sites = async () => {
   return (

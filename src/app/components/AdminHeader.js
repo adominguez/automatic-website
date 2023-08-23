@@ -2,9 +2,10 @@ import { Input, Button } from '@/app/components/MaterialComponents'
 import { Menu } from '@/app/components/Icons'
 import Breadcrumb from '@/app/components/AdminBreadcrumb'
 import { useToken, useAuthContext } from '@/app/hooks/auth'
+import Link from 'next/link'
 
 const Header = ({ title, scrollTop }) => {
-  const { getToken } = useToken()
+  const { getToken, removeToken } = useToken()
   const { user } = useAuthContext()
   return (
     <header
@@ -19,7 +20,7 @@ const Header = ({ title, scrollTop }) => {
         </Button>
         <Input size="lg" label="Buscar" color="blue-gray" />
         {
-          getToken() && user ? 'Logado' : 'Login'
+          getToken() && user ? <button onClick={() => removeToken()}>Logout</button> : <Link href="/admin/login">Login</Link>
         }
       </div>
     </header>

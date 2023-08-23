@@ -23,7 +23,7 @@ const LoginPage = () => {
         identifier: form.email,
         password: form.password
       }
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API}/auth/local`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

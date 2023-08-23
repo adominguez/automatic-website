@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState, createContext, useContext } from 'react'
 import { AUTH_TOKEN } from '@/app/constants/auth'
 
