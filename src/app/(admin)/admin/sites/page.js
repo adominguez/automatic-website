@@ -11,8 +11,6 @@ const Sites = async () => {
     <>
       <DefaultListPage endpoint={endpoint}>
         <SiteItem className="item" />
-        <div className="error">Super error</div>
-        <div>Contenido para ver si se muestra al final</div>
       </DefaultListPage>
       <div className="absolute bottom-3 right-3">
         <SpeedDial>

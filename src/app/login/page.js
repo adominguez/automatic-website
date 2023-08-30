@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Button, Card, Typography, Input, Checkbox } from '@/app/components/MaterialComponents'
 // import { useNavigate } from "react-router-dom";
 import { useAuthContext, useToken } from '@/app/hooks/auth'
+import { redirect } from 'next/navigation'
 
 const LoginPage = () => {
   // const navigate = useNavigate();
@@ -40,10 +41,7 @@ const LoginPage = () => {
 
         // set the user
         setUser(data.user)
-
-        console.log(`Welcome back ${data.user.username}!`)
-
-        // navigate("/profile", { replace: true });
+        redirect('/admin')
       }
     } catch (error) {
       console.error(error)

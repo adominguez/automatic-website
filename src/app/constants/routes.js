@@ -39,3 +39,29 @@ export const ADMIN_ROUTES = {
     ]
   }
 }
+
+export const WEB_ROUTES = [{
+  label: 'Inicio',
+  icon: HomeIcon,
+  route: '/'
+},
+{
+  label: 'Funcionalidad',
+  icon: OpenFolder,
+  route: '/funcionalidad'
+},
+{
+  label: 'Precio',
+  icon: OpenFolder,
+  route: '/precio'
+},
+{
+  label: 'Testimonios',
+  icon: OpenFolder,
+  route: '/testimonios'
+},
+{
+  label: 'Contacto',
+  icon: OpenFolder,
+  route: '/contacto'
+}]
