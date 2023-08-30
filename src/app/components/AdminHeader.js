@@ -1,3 +1,4 @@
+'use client'
 import { Input, Button } from '@/app/components/MaterialComponents'
 import { Menu } from '@/app/components/Icons'
 import Breadcrumb from '@/app/components/AdminBreadcrumb'
@@ -20,7 +21,7 @@ const Header = ({ title, scrollTop }) => {
         </Button>
         <Input size="lg" label="Buscar" color="blue-gray" />
         {
-          getToken() && user ? <button onClick={() => removeToken()}>Logout</button> : <Link href="/admin/login">Login</Link>
+          getToken() && user ? <button onClick={() => removeToken()}>Logout</button> : <Link href="../login">Login</Link>
         }
       </div>
     </header>

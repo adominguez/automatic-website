@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from 'react'
 import { INITIAL_BLOCKS } from '@/app/constants/gutemberg'
 import { isH1, isList, getListValues } from '../libs/clipboard'

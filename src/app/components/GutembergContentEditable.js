@@ -1,3 +1,4 @@
+'use client'
 import { createElement, forwardRef } from 'react'
 import ContentEditable from 'react-contenteditable'
 import { ariaByTag, classByTag } from '@/app/constants/gutemberg'

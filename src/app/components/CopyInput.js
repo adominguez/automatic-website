@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import { Input, IconButton } from '@/app/components/MaterialComponents'
 import { Copy } from '@/app/components/Icons'

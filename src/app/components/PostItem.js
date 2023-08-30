@@ -1,3 +1,4 @@
+'use client'
 import { Card, Typography, Button, CardHeader, CardBody, SpeedDial, SpeedDialHandler, SpeedDialContent, IconButton } from '@/app/components/MaterialComponents'
 import { EllipsisHorizontalIcon } from '@/app/components/Icons'
 import {

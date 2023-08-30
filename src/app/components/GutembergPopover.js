@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 import { PlusSmall } from '@/app/components/Icons'
 import { TYPES_OF_CONTENT } from '@/app/constants/gutemberg'

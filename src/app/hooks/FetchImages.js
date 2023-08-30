@@ -1,3 +1,4 @@
+'use client'
 import { useCallback, useState, useEffect } from 'react'
 import { MANAGE_IMAGE_TABS } from '../constants/ManageImage'
 

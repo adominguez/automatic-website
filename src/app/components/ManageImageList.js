@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable camelcase */
 import { useState } from 'react'
 import { Progress, Checkbox, Button, Typography } from '@/app/components/MaterialComponents'

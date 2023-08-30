@@ -1,16 +1,18 @@
+'use client'
 import { useState, useEffect } from 'react'
+
+let loading = false
 
 export const useFetchApi = ({ endpoint }) => {
   const [response, setResponse] = useState(undefined)
   const [error, setError] = useState(undefined)
-  const [loading, setLoading] = useState(false)
   const [isEmpty, setEmpty] = useState(false)
 
   const loadData = async () => {
     setEmpty(false)
     setError(false)
     setResponse(undefined)
-    setLoading(true)
+    loading = true
     try {
       const { data, meta } = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/${endpoint}`).then(res => res.json())
       if (!data?.length) {
@@ -23,12 +25,14 @@ export const useFetchApi = ({ endpoint }) => {
     } catch (e) {
       setError(e)
     } finally {
-      setLoading(false)
+      loading = false
     }
   }
 
   useEffect(() => {
-    loadData()
+    if (!loading) {
+      loadData()
+    }
   }, [])
 
   return { response, error, loading, isEmpty, loadData }

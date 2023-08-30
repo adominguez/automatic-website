@@ -1,3 +1,4 @@
+'use client'
 import { Typography, Button } from '@/app/components/MaterialComponents'
 import { Delete, Pencil } from '@/app/components/Icons'
 import CopyInput from './CopyInput'
