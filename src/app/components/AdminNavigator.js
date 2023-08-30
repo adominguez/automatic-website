@@ -35,7 +35,7 @@ const Navigator = () => {
       <div className={`w-60 h-full transition-all p-4 fixed md:left-0 ${opened ? 'z-30 left-0' : 'md:relative -left-60'}`}>
         <aside className={'h-full w-full rounded-lg text-blue-gray-100 bg-gradient-to-b from-blue-gray-600 to-blue-gray-800'}>
           <div className="flex items-center justify-center h-16">
-            {Logo}
+            <Logo />
           </div>
           <hr className="h-[0.0625rem] my-4 bg-transparent border-b-0 opacity-25 bg-gradient-to-r from-transparent via-white to-transparent" />
           <nav>

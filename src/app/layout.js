@@ -3,6 +3,7 @@ import 'react-quill/dist/quill.snow.css'
 import './quill.css'
 import { Inter } from 'next/font/google'
 import { Providers } from './providers'
+import WebPage from '@/app/components/WebPage'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +17,9 @@ export default function RootLayout ({ children }) {
     <html lang="es" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          {children}
+          <WebPage>
+            {children}
+          </WebPage>
         </Providers>
       </body>
     </html>
