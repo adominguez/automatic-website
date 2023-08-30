@@ -46,7 +46,3 @@
 .placeholder:focus {
   @apply border-b-blue-gray-700;
 }
-
-.balance {
-  text-wrap: balance;
-}
