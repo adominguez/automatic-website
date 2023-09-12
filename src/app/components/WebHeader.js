@@ -8,7 +8,6 @@ import { usePathname } from 'next/navigation'
 const WebHeader = () => {
   const { user, onLogout, authorized } = useAuthContext()
   const pathname = usePathname()
-  const routeSelected = WEB_ROUTES.find(item => item.route === pathname)
   return (!pathname.includes('/admin')
     ? <header className={'header bg-amber-50 sticky z-10 w-full top-0 flex flex-col justify-center items-center'}>
       <div className='flex items-center justify-between w-full gap-4 px-4 py-8 md:flex-row lg:max-w-5xl'>

@@ -47,7 +47,6 @@ const NewPost = () => {
   const [keyword, setKeyword] = useState('')
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState('')
-  const markup = { __html: data }
 
   const changeKeyword = (e) => {
     setKeyword(e.target.value)

@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { Button, Card, Typography, Input, Checkbox } from '@/app/components/MaterialComponents'
 // import { useNavigate } from "react-router-dom";
 import { useAuthContext } from '@/app/hooks/auth'
-import { redirect } from 'next/navigation'
 
 const LoginPage = () => {
   const { onLogin, isLoadingLogin } = useAuthContext()
