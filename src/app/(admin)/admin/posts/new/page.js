@@ -57,7 +57,7 @@ const NewPost = () => {
     event.preventDefault()
     setData('')
     setLoading(true)
-    const res = await fetch(`../../../api/new-post/${keyword}`)
+    const res = await fetch(`../../../api/new-post?keyword=${keyword}`)
     const response = await res.json()
     console.log(response)
     setData(response.data)
