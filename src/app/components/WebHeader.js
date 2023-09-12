@@ -2,9 +2,11 @@
 import { Logo } from '@/app/components/Icons'
 import { WEB_ROUTES } from '@/app/constants/routes'
 import Link from 'next/link'
+import { useAuthContext } from '@/app/hooks/auth'
 import { usePathname } from 'next/navigation'
 
 const WebHeader = () => {
+  const { user, onLogout, authorized } = useAuthContext()
   const pathname = usePathname()
   const routeSelected = WEB_ROUTES.find(item => item.route === pathname)
   return (!pathname.includes('/admin')
@@ -21,7 +23,14 @@ const WebHeader = () => {
           }
         </nav>
         <nav className='flex gap-3'>
-          <Link href="/login">Acceder</Link>
+          {
+            authorized && user.id
+              ? <div className="flex gap-2">
+                <button onClick={() => onLogout()}>Logout</button>
+                <Link href="/admin">Admin</Link>
+              </div>
+              : <Link href="../login">Acceder</Link>
+          }
         </nav>
       </div>
     </header>

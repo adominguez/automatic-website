@@ -2,53 +2,23 @@
 import React, { useState } from 'react'
 import { Button, Card, Typography, Input, Checkbox } from '@/app/components/MaterialComponents'
 // import { useNavigate } from "react-router-dom";
-import { useAuthContext, useToken } from '@/app/hooks/auth'
+import { useAuthContext } from '@/app/hooks/auth'
 import { redirect } from 'next/navigation'
 
 const LoginPage = () => {
+  const { onLogin, isLoadingLogin } = useAuthContext()
   // const navigate = useNavigate();
-  const { setNewToken } = useToken()
-  const { setUser } = useAuthContext()
   const [form, setForm] = useState({
     email: '',
     password: ''
   })
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
 
   const onFinish = async (e) => {
     e.preventDefault()
-    setIsLoading(true)
-    try {
-      const value = {
-        identifier: form.email,
-        password: form.password
-      }
-      const response = await fetch(`${process.env.NEXT_PUBLIC_REQUEST_API_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(value)
-      })
-
-      const data = await response.json()
-      if (data?.error) {
-        throw data?.error
-      } else {
-        // set the token
-        setNewToken(data.jwt)
-
-        // set the user
-        setUser(data.user)
-        redirect('/admin')
-      }
-    } catch (error) {
-      console.error(error)
-      setError(error?.message ?? 'Something went wrong!')
-    } finally {
-      setIsLoading(false)
-    }
+    onLogin({
+      identifier: form.email,
+      password: form.password
+    })
   }
 
   const handlerChange = (e) => {
@@ -91,7 +61,7 @@ const LoginPage = () => {
         containerProps={{ className: '-ml-2.5' }}
       />
       <Button type="submit" className="mt-6" fullWidth>
-        Login {isLoading && '...'}
+        Login {isLoadingLogin && '...'}
       </Button>
       <Typography color="gray" className="mt-4 font-normal text-center">
         Already have an account?{' '}

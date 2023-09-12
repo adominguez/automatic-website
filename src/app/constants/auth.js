@@ -1,4 +1,5 @@
 export const AVATAR_API = 'https://ui-avatars.com/api'
-export const AUTH_TOKEN = 'authToken'
+export const AUTH_TOKEN = 'jwt'
 export const AUTH_USER = 'user'
+export const AUTH_AUTHENTICATED = 'authenticated'
 export const BEARER = 'Bearer'
