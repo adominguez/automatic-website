@@ -7,7 +7,8 @@ import { Input, Typography, Button, Card } from '@/app/components/MaterialCompon
 import dynamic from 'next/dynamic'
 
 const NewSite = () => {
-  const markup = { __html: data }
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState(false)
 
   const onSubmitHandler = async (event) => {
     event.preventDefault()
