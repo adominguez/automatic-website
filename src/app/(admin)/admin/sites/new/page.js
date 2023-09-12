@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 'use client'
 import { useState } from 'react'
 import PostSkeleton from '@/app/components/PostSkeleton'

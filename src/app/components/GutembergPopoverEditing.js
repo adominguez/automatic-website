@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
 'use client'
 import { useState } from 'react'
 import { CldUploadWidget } from 'next-cloudinary'

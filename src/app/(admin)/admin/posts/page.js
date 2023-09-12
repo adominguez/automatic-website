@@ -7,7 +7,7 @@ import CardsListSkeleton from '@/app/components/CardsListSkeleton'
 import Link from 'next/link'
 
 const Posts = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
   return (
     <>
       <div className="absolute bottom-3 right-3">

@@ -27,7 +27,7 @@ const getSkeleton = (type) => getType(type) === TYPES_VALUES[0] ? <SkeletonCardL
 
 const DefaultListPage = ({ type: defaultType = TYPES_VALUES[1], endpoint, children }) => {
   const [type, setType] = useState(defaultType)
-  const { response, error, loading, isEmpty, loadData } = useFetchApi({ endpoint })
+  const { response, error, loading, isEmpty } = useFetchApi({ endpoint })
 
   const hasChildren = (childType) => {
     if (!children) return null
